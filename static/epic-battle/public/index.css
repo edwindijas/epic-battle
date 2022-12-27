@@ -1,0 +1,69 @@
+#root {
+    height: 100%; border: 0;  font-size: 1em;
+  }
+
+  * {
+    margin: 0; padding: 0;
+  }
+
+  html, body, #root, #bg{
+    height: 100%;
+  }
+
+  body {
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  #bg {
+    position: fixed; top: 0; left: -1068.37%;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(#251F4F , #0E1022);
+    background-size: cover;
+    background-repeat:no-repeat;
+    background-attachment: fixed;
+  }
+
+  #root {
+    position: relative;
+  }
+
+  .lds-hourglass {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-hourglass:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    margin: 8px;
+    box-sizing: border-box;
+    border: 32px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-hourglass 1.2s infinite;
+  }
+  @keyframes lds-hourglass {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    50% {
+      transform: rotate(900deg);
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    100% {
+      transform: rotate(1800deg);
+    }
+  }
+
+  #root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
