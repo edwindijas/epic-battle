@@ -1,0 +1,18 @@
+modules:
+  jira:globalPage:
+    - key: epic-battle-global-page
+      resource: main
+      resolver:
+        function: resolver
+      title: Epic Battle
+      viewportSize: xlarge
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+      layout: blank
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/epic-battle/build
+app:
+  id: ari:cloud:ecosystem::app/14557bb8-86c3-4e19-9326-8fffa4a69221
