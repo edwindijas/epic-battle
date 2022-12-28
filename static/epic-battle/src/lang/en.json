@@ -1,5 +1,6 @@
 {
     "app.page.home.title.epic": "epic",
     "app.page.home.title.battle": "battle",
-    "app.page.home.startGame": "start game"
+    "app.page.home.startGame": "start game",
+    "app.feature.welcome.greeting": "welcome"
 }

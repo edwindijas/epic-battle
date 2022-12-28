@@ -1,6 +1,5 @@
 import { IcoEpic } from "assets/svg/IcoEpic";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 import * as StyEle from "./LandingLayout.style"
 
 const LandingLayoutTestId = 'page-landing-layout',
