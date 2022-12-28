@@ -6,6 +6,6 @@ export const DefaultTheme: MyTheme = {
     },
 
     gradient: {
-        general: "linear-gradient(#837BB9, #4E59A4)"
+        general: "linear-gradient(60deg, #837BB9, #4E59A4)"
     }
 }

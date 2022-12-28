@@ -17,7 +17,7 @@ describe('Router', () => {
     })
 
     it ('Navigates to Game Page correclty', () => {
-        const nextPageLink = getByTestId('page-landing-lnk-game');
+        const nextPageLink = getByTestId('page-landing-layout-lnk-game');
 
         act(() => {
             fireEvent.click(nextPageLink);
