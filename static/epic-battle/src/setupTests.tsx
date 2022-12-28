@@ -10,12 +10,16 @@ import { ReactNode, useRef, useState, FocusEvent } from 'react';
 import { Link, MemoryRouter } from 'react-router-dom';
 import defaultMessages from "lang/en.json"
 import { IntlProvider } from 'react-intl';
+import { ThemeProvider } from 'styled-components';
+import { DefaultTheme } from 'theme/default';
 
 const { getByTestId } = screen;
 
 const AllTheProviders = ({ children }: { children?: ReactNode }) => {
-  return <IntlProvider messages={defaultMessages} locale="en" defaultLocale="en" >      
+  return <IntlProvider messages={defaultMessages} locale="en" defaultLocale="en" >
+      <ThemeProvider theme={DefaultTheme} >
         { children }
+      </ThemeProvider>   
     </IntlProvider>
 }
 
