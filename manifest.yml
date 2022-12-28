@@ -14,5 +14,9 @@ modules:
 resources:
   - key: main
     path: static/epic-battle/build
+permissions:
+  content:
+    styles:
+      - 'unsafe-inline'
 app:
   id: ari:cloud:ecosystem::app/14557bb8-86c3-4e19-9326-8fffa4a69221
