@@ -1,0 +1,1 @@
+export type PositionProperty = 'left' | 'right' | 'top' | 'bottom'
