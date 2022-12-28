@@ -7,7 +7,7 @@ import { Router } from "./Router"
 const { getByTestId } = screen;
 
 beforeEach(() => {
-    render(<div ><Router >
+    testRenderWithoutRouter(<div ><Router >
     </Router></div>)
 })
 

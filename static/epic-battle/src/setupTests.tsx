@@ -8,13 +8,15 @@ import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { ReactNode, useRef, useState, FocusEvent } from 'react';
 import { Link, MemoryRouter } from 'react-router-dom';
+import defaultMessages from "lang/en.json"
+import { IntlProvider } from 'react-intl';
 
 const { getByTestId } = screen;
 
 const AllTheProviders = ({ children }: { children?: ReactNode }) => {
-  return <MemoryRouter >
-    { children }
-  </MemoryRouter>
+  return <IntlProvider messages={defaultMessages} locale="en" defaultLocale="en" >      
+        { children }
+    </IntlProvider>
 }
 
 export const changePath = (path: string) => {
@@ -53,8 +55,16 @@ const RouteSwitcher = () => {
 const customRender = (ui: any, options?: any) =>
   render(ui, { wrapper: AllTheProviders, ...options })
 
-// re-export everything
-export * from '@testing-library/react'
+global.testRender = (children: ReactNode) => {
+  return render(<AllTheProviders >
+    <MemoryRouter >
+      { children }
+    </MemoryRouter>
+  </AllTheProviders>)
+}
 
-// override render method
-export { customRender as render }
+global.testRenderWithoutRouter = (children: ReactNode) => {
+  return render(<AllTheProviders >
+    { children }
+  </AllTheProviders>)
+}
