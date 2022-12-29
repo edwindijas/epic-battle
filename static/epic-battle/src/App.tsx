@@ -5,15 +5,17 @@ import defaultMessages from 'lang/en.json'
 import * as StyEle from './App.style'
 import { ThemeProvider } from 'styled-components';
 import { DefaultTheme } from 'theme/default';
+import { FeatureBackground } from 'features/background/Background';
 
 function App() {
   return (
     <ThemeProvider theme={DefaultTheme} >
-      <StyEle.Wrapper data-testid='main-app' className="App">
         <IntlProvider locale='en' messages={defaultMessages} >
-          <Router />
+          <FeatureBackground />
+          <StyEle.Wrapper data-testid='main-app' className="App">
+            <Router />
+          </StyEle.Wrapper>
         </IntlProvider>
-      </StyEle.Wrapper>
     </ThemeProvider>
   );
 }
