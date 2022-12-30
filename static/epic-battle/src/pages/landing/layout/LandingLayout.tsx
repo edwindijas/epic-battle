@@ -1,6 +1,7 @@
 import { IcoEpic } from "assets/svg/IcoEpic";
+import { FeatureSettings } from "features/settings/SettingsFeature";
 import { FormattedMessage } from "react-intl";
-import * as StyEle from "./LandingLayout.style"
+import * as StyEle from "./styles"
 
 const LandingLayoutTestId = 'page-landing-layout',
     MessageId = 'app.page.home'
@@ -8,7 +9,9 @@ const LandingLayoutTestId = 'page-landing-layout',
 
 
 export const LandingLayout = () => {
-    return <StyEle.Wrapper data-testid={LandingLayoutTestId} >
+    return <>
+    <FeatureSettings />
+    <StyEle.Wrapper data-testid={LandingLayoutTestId} >
         <StyEle.IcoEpic data-testid={LandingLayoutTestId + '-ico-epic'} >
             <IcoEpic />
         </StyEle.IcoEpic>
@@ -36,5 +39,6 @@ export const LandingLayout = () => {
             </span>
             <StyEle.ThreeDots />
         </StyEle.LnkStartGame>
-    </StyEle.Wrapper> 
+    </StyEle.Wrapper>
+    </>
 }

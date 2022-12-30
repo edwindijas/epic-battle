@@ -4,5 +4,8 @@
     "app.page.home.startGame": "start game",
     "app.feature.welcome.greeting": "welcome",
     "app.feature.leaderboard.title": "Leaderboard",
-    "app.feature.leaderboard.lnk.viewLeaderboard": "Show Leaderboard"
+    "app.feature.leaderboard.lnk.viewLeaderboard": "Show Leaderboard",
+    "app.feature.settings.title": "settings",
+    "app.feature.settings.music": "background music",
+    "app.feature.settings.sxf": "sound effects"
 }

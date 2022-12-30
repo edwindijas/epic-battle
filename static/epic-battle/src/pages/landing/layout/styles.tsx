@@ -16,40 +16,92 @@ export const Title = styled.h1`
 export const TitleSpan = styled.span`
     font-size: 3em;
     display: block;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-shadow: 0 0.2em 0.2em rgba(0, 0, 0, 0.3);
+    text-transform: Capitalize;
+    letter-spacing: 0.1em;
     &:last-child {
-        font-weight: 800;
-        font-size: 5.5em;
-        margin-top: 0.075em;
+        font-weight: 400;
+        font-size: 8em;
+        margin-top: 0.1em;
     }
 `
 
 export const IcoEpic = styled.figure`
     fill: #fff;
-    height: 8em;
+    height: 3em;
     width: 10em;
-    margin: 0 1em 0 auto;
+    margin: 0 8em 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @keyframes animate {
+        0% {
+            height: 15em;
+        }
+
+        ${() => {
+            let str = '';
+            for (let x = 1; x < 11; x++) {
+                str += `${x}% {
+                    opacity: ${x % 3 === 0 ? 0 : 1};
+                }`;
+            }
+            return str;
+        }}
+
+        50% {
+            height: 12em;
+        }
+
+        100% {
+            height: 15em;
+        }
+    }
+      
+    @keyframes bubble-anim {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1); }
+    
+    20% {
+        -webkit-transform: scaleY(0.95) scaleX(1.05);
+        transform: scaleY(0.95) scaleX(1.05); }
+    
+    48% {
+        -webkit-transform: scaleY(1.1) scaleX(0.9);
+        transform: scaleY(1.1) scaleX(0.9); }
+    
+    68% {
+        -webkit-transform: scaleY(0.98) scaleX(1.02);
+        transform: scaleY(0.98) scaleX(1.02); }
+    
+    80% {
+        -webkit-transform: scaleY(1.02) scaleX(0.98);
+        transform: scaleY(1.02) scaleX(0.98); }
+    
+    97%, 100% {
+        -webkit-transform: scale(1);
+        transform: scale(1); } }
+
     svg {
-        width: 7em
+        height: 10em;
+        animation: animate 5s infinite, bubble-anim 1s infinite;
     }
 
 `
 
 export const LnkStartGame = styled(Link)`
     display: flex;
-    width: 100%;
+    width: 90%;
     background-color: #000;
     height: 3em;
     align-items: center;
     justify-content: center;
-    text-transform: uppercase;
+    text-transform: capitalize;
     font-weight: 800;
-    font-size: 1.6em;
+    font-size: 1.5em;
     border-radius: 4em;
     margin-top: 1.5em;
+    margin: 1em auto 0;
     letter-spacing: 0.1em;
     position: relative;
     text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.3);
@@ -89,14 +141,14 @@ export const ThreeDots = styled.span`
 
     &, &::after, &::before {
         position: absolute;
-        width: 0.35em;
-        height: 0.35em;
+        width: 0.3em;
+        height: 0.3em;
         border-radius: 50%;
-        border: 0.1em solid rgba(255, 255, 255, 0.1);
+        //border: 0.1em solid rgba(255, 255, 255, 0.1);
         display: block;
         box-sizing: border-box;
         background-clip: padding-box;
-        background-color: rgba(49, 59, 77, .41);
+        background-color: rgba(49, 59, 77, .71);
     }
 
     &::after, &::before {
@@ -106,12 +158,12 @@ export const ThreeDots = styled.span`
 
     &::before {
         bottom: auto;
-        top: -0.9em;
+        top: -0.7em;
     }
 
     &::after {
         top: auto;
-        bottom: -0.9em;
+        bottom: -0.7em;
     }
 
     &:last-child {
