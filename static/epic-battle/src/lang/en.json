@@ -2,5 +2,7 @@
     "app.page.home.title.epic": "epic",
     "app.page.home.title.battle": "battle",
     "app.page.home.startGame": "start game",
-    "app.feature.welcome.greeting": "welcome"
+    "app.feature.welcome.greeting": "welcome",
+    "app.feature.leaderboard.title": "Leaderboard",
+    "app.feature.leaderboard.lnk.viewLeaderboard": "Show Leaderboard"
 }

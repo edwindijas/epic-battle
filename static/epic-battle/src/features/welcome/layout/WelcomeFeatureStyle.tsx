@@ -74,6 +74,6 @@ export const UserRating = styled.div`
     align-items: center;
     justify-items: center;
     padding: 0 1em;
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: 800;
 `

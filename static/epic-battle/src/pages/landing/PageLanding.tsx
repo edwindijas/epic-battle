@@ -1,3 +1,4 @@
+import { FeatureLeaderBoard } from "features/leaderboard/LeaderBoard";
 import { WelcomeFeature } from "features/welcome/WelcomeFeature"
 import { LandingLayout } from "./layout/LandingLayout"
 
@@ -6,7 +7,8 @@ const LandingTestId = 'page-landing';
 
 export const PageLanding = () => {
     return <div data-testid={LandingTestId} >
-        <WelcomeFeature />
         <LandingLayout />
+        <FeatureLeaderBoard />
+        <WelcomeFeature />
     </div>
 }
