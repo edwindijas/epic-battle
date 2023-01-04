@@ -11,7 +11,7 @@ function App() {
   return (
     <ThemeProvider theme={DefaultTheme} >
         <IntlProvider locale='en' messages={defaultMessages} >
-          <FeatureBackground />
+          { <FeatureBackground /> }
           <StyEle.Wrapper data-testid='main-app' className="App">
             <Router />
           </StyEle.Wrapper>

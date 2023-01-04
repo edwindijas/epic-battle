@@ -105,7 +105,8 @@ export const LnkStartGame = styled(Link)`
     letter-spacing: 0.1em;
     position: relative;
     text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.3);
-
+    font-family: arial;
+    
     span:nth-child(2) {
         position: relative;
         z-index: 2;
@@ -114,7 +115,8 @@ export const LnkStartGame = styled(Link)`
     &::before, &::after { 
         position: absolute;
         content: '';
-        border-radius: 4em;
+        border-radius: 0.5em;
+        
     }
 
     &::before {
@@ -138,7 +140,7 @@ export const ThreeDots = styled.span`
     left: 0.5em;
     margin: auto 0;
     z-index: 3;
-
+    
     &, &::after, &::before {
         position: absolute;
         width: 0.3em;
@@ -153,7 +155,6 @@ export const ThreeDots = styled.span`
 
     &::after, &::before {
         content: '';
-        left: 0.25em;
     }
 
     &::before {

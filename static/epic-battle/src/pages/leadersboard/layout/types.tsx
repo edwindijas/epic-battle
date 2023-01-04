@@ -1,3 +1,3 @@
-export interface LeaderBoardPageLayoutProps {
-    
+export interface PageLeaderBoardLayoutProps {
+    handleBack?: () => void
 }
