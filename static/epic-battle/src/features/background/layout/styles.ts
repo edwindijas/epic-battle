@@ -3,12 +3,8 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
     position: fixed;
-    top: -100%;
-    left: -100%;
-    right: -100%;
-    bottom: -100%;
-    height: 2380px;
-    width: 3368px;
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-items: center;
@@ -17,4 +13,10 @@ export const Wrapper = styled.div`
 export const BackgroundImage = styled.img`
     background-color: yellow;
     opacity: .3;
+`
+
+export const Darken = styled.div`
+    position: absolute;
+    ${uniPos(0)}
+    background: rgba(0, 0, 0, 0.2);
 `

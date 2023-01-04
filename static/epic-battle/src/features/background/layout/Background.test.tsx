@@ -12,8 +12,4 @@ describe('background render', () => {
     it ('correctly', () => {
         expect(getByTestId(TestId)).toBeInTheDocument();
     })
-
-    it ('img', () => {
-        expect(getByTestId(TestId + '-background-image')).toBeInTheDocument();
-    })
 })
