@@ -1,5 +1,6 @@
 import { IcoEpic } from "assets/svg/IcoEpic";
 import { FeatureSettings } from "features/settings/SettingsFeature";
+import { MouseEvent } from "react";
 import { FormattedMessage } from "react-intl";
 import * as StyEle from "./styles"
 
@@ -9,6 +10,14 @@ const LandingLayoutTestId = 'page-landing-layout',
 
 
 export const LandingLayout = () => {
+
+    //prevent initial missfire
+
+    const handleStartGame = (e: MouseEvent<HTMLAnchorElement>) => {
+        e.stopPropagation();
+    }
+
+
     return <>
     <FeatureSettings />
     <StyEle.Wrapper data-testid={LandingLayoutTestId} >
@@ -29,7 +38,7 @@ export const LandingLayout = () => {
                 />
             </StyEle.TitleSpan>
         </StyEle.Title>
-        <StyEle.LnkStartGame to='/game' data-testid={LandingLayoutTestId + '-lnk-game'} >
+        <StyEle.LnkStartGame onClick={handleStartGame} to='/game' data-testid={LandingLayoutTestId + '-lnk-game'} >
             <StyEle.ThreeDots />
             <span >
                 <FormattedMessage
