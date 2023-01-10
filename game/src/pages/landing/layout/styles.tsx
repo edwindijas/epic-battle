@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
     flex-direction: column;
     position: relative;
     justify-content: center;
+    z-index: 10;
     ${({length}: {length: number}) => `
         width: ${length}px;
         height: ${length}px;

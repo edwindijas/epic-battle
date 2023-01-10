@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-items: center;
+    
 `
 
 export const BackgroundImage = styled.img`
@@ -18,11 +19,14 @@ export const BackgroundImage = styled.img`
 export const Board = styled.div`
     position: absolute;
     ${uniPos(0)};
-
     margin: auto;
-    background-image: radial-gradient(#C2D448, transparent 100%);
-    background-image: radial-gradient(#C2D448,transparent 68%);
-    border-radius: 50%;
+    &::before {
+        ${uniPos(-20, [], '%')};
+        background-image: radial-gradient(#C2D448,transparent 68%);
+        content: '';
+        border-radius: 50%;
+        position: absolute;
+    }
 
     ${({width}: {width: number}) => `
         height: ${width}px;

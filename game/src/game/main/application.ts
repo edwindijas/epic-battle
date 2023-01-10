@@ -96,6 +96,15 @@ export class Application {
             })
         })
 
+        bugs.forEach(bug => {
+            const bugRect = bug.getRectangle();
+            const actRect = this.actor.getRectangle();
+
+            if (this.rectanglesColliding(bugRect, actRect)) {
+                this.bugHandler.removeBug(bug.getId())
+            }
+        })
+
     }
 
 }

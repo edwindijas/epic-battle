@@ -2,7 +2,7 @@
 import { Application } from './main/application';
 import React, { useEffect, useRef } from 'react';
 import * as StyEle from './styles'
-import background from 'assets/background/background.jpg'
+import { FloralBackground } from 'components/floralBackground/FloralBackground';
 
 
 export const Game = () => {
@@ -14,25 +14,27 @@ export const Game = () => {
 
     const application = new Application();
 
-    if (!ref.current) {
-      return;
-    }
+    if (!ref.current) { return; }
 
     const divRef = ref.current;
 
     /*@ts-ignore */
-    //divRef.appendChild(application.getView());
+    divRef.appendChild(application.getView());
 
     return () => {
       /*@ts-ignore */
-      //divRef.removeChild(application.getView());
+      divRef.removeChild(application.getView());
       application.destroy()
     }
 
   }, [])
 
   return (
-   <StyEle.Wrapper ref={ref} src={background} />
+    <>
+      <FloralBackground />
+      <StyEle.Wrapper grid ref={ref} />
+    </>
+   
   );
 }
 

@@ -1,4 +1,5 @@
 import { IcoEpic } from "assets/svg/IcoEpic";
+import { FloralBackground } from "components/floralBackground/FloralBackground";
 import { FeatureLeaderBoard } from "features/leaderboard/LeaderBoard";
 import { FeatureSettings } from "features/settings/SettingsFeature";
 import { useSquare } from "hooks/useSquare";
@@ -22,7 +23,7 @@ export const LandingLayout = () => {
 
 
     return <>
-    
+    <FloralBackground />
     <StyEle.Wrapper data-testid={LandingLayoutTestId} length={length} >
         <FeatureSettings />
         <StyEle.IcoEpic data-testid={LandingLayoutTestId + '-ico-epic'} >

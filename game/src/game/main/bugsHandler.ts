@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { ApplicationScene } from "game/scene/scene";
 
 export class BugsHandler {
-    private speed = 1000;
+    private speed = 2000;
     private timeout: number | undefined;
     private bugCoordinate = {};
     private container: Pixi.Container = {} as Pixi.Container;

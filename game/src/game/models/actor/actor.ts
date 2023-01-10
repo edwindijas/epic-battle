@@ -7,6 +7,7 @@ import { Mortar } from "game/models/mortar/mortar";
 import BombSound from 'game/assets/audio/WAV/Spell_Explosion.wav';
 import { ApplicationScene } from "game/scene/scene";
 import {v4 as uuid} from 'uuid'
+import { Rectangle } from "game/main/types";
 
 export class Actor extends BaseObject {
     protected preloadAssets: string[] = [
@@ -152,7 +153,15 @@ export class Actor extends BaseObject {
         this.mortarContainer.removeChild(mortar.getContainer());
         mortar.destroy();
         this.mortars.delete(id);
+    }
 
+    public getRectangle = (): Rectangle => {
+        return {
+            x: this.base.position.x,
+            y: this.base.position.y,
+            width: this.base.width / 2,
+            height: this.base.height / 2
+        }
     }
 
 }
