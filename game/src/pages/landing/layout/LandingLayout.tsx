@@ -1,5 +1,7 @@
 import { IcoEpic } from "assets/svg/IcoEpic";
+import { FeatureLeaderBoard } from "features/leaderboard/LeaderBoard";
 import { FeatureSettings } from "features/settings/SettingsFeature";
+import { useSquare } from "hooks/useSquare";
 import { MouseEvent } from "react";
 import { FormattedMessage } from "react-intl";
 import * as StyEle from "./styles"
@@ -12,6 +14,7 @@ const LandingLayoutTestId = 'page-landing-layout',
 export const LandingLayout = () => {
 
     //prevent initial missfire
+    const length = useSquare();
 
     const handleStartGame = (e: MouseEvent<HTMLAnchorElement>) => {
         e.stopPropagation();
@@ -19,35 +22,27 @@ export const LandingLayout = () => {
 
 
     return <>
-    <FeatureSettings />
-    <StyEle.Wrapper data-testid={LandingLayoutTestId} >
+    
+    <StyEle.Wrapper data-testid={LandingLayoutTestId} length={length} >
+        <FeatureSettings />
         <StyEle.IcoEpic data-testid={LandingLayoutTestId + '-ico-epic'} >
             <IcoEpic />
         </StyEle.IcoEpic>
         <StyEle.Title data-testid={LandingLayoutTestId + '-title'} >
-            <StyEle.TitleSpan >
                 <FormattedMessage
-                    id={MessageId + '.title.epic'}
-                    defaultMessage='Epic'
+                    id={MessageId + '.title'}
+                    defaultMessage='Epic Battle'
                 />
-            </StyEle.TitleSpan>
-            <StyEle.TitleSpan >
-                <FormattedMessage
-                    id={MessageId + '.title.battle'}
-                    defaultMessage='Battle'
-                />
-            </StyEle.TitleSpan>
         </StyEle.Title>
         <StyEle.LnkStartGame onClick={handleStartGame} to='/game' data-testid={LandingLayoutTestId + '-lnk-game'} >
-            <StyEle.ThreeDots />
             <span >
                 <FormattedMessage
                     id={MessageId + '.startGame'}
                     defaultMessage='start game'
                 />
             </span>
-            <StyEle.ThreeDots />
         </StyEle.LnkStartGame>
+        <FeatureLeaderBoard />
     </StyEle.Wrapper>
     </>
 }

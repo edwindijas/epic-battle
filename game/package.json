@@ -30,7 +30,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build && rm -rf ../forge/static/game && mv build ../forge/static/game",
-    "test": "react-scripts test",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

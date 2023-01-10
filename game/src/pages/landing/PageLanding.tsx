@@ -8,7 +8,6 @@ const LandingTestId = 'page-landing';
 export const PageLanding = () => {
     return <div data-testid={LandingTestId} >
         <LandingLayout />
-        <FeatureLeaderBoard />
         <WelcomeFeature />
     </div>
 }

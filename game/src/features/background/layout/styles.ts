@@ -15,8 +15,17 @@ export const BackgroundImage = styled.img`
     opacity: .3;
 `
 
-export const Darken = styled.div`
+export const Board = styled.div`
     position: absolute;
-    ${uniPos(0)}
-    background: #111;
+    ${uniPos(0)};
+
+    margin: auto;
+    background-image: radial-gradient(#C2D448, transparent 100%);
+    background-image: radial-gradient(#C2D448,transparent 68%);
+    border-radius: 50%;
+
+    ${({width}: {width: number}) => `
+        height: ${width}px;
+        width: ${width}px;
+    `}
 `

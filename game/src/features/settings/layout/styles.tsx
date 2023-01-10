@@ -88,7 +88,7 @@ export const CloseButton = styled.button`
         height: 90%;
         border-radius: 50%;
         background: radial-gradient(circle at 50% 0px,#ffffff,rgba(255,255,255,0) 58%);
-        -webkit-filter: blur(5px);
+        --webkit-filter: blur(5px);
         z-index: 2;
     }
     &::after {

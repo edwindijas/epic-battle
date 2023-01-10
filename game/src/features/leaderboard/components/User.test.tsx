@@ -4,8 +4,22 @@ import {LeaderBoardFeatureUser} from './User'
 const TestId = 'feature-leaderboard-component-user',
     { getByTestId } = screen;
 
+const sampleUsers = [
+    {
+        name: 'Edwin Chiwona',
+        highScore: 900,
+        position: 1
+    },
+    {
+        name: 'Wonderful Kunje',
+        highScore: 900,
+        position: 1
+    },
+]
+    
+    
 beforeEach(() => {
-    testRender(<LeaderBoardFeatureUser />)
+    testRender(<LeaderBoardFeatureUser key='123' {...sampleUsers[0]} />)
 })
 
 describe('Leaderboard Feature Component user render', () => {
