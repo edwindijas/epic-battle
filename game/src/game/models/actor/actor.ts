@@ -1,23 +1,28 @@
 import * as Pixi from "pixi.js"
-import img from "game/assets/models/actor/actor.png"
+import imgCannon from "game/assets/models/actor/cannon.png"
+import imgBase from "game/assets/models/actor/base.png"
 import { BaseObject } from "game/library/base";
 import { Application } from "game/main/application";
 import { Mortar } from "game/models/mortar/mortar";
 import BombSound from 'game/assets/audio/WAV/Spell_Explosion.wav';
 import { ApplicationScene } from "game/scene/scene";
+import {v4 as uuid} from 'uuid'
 
 export class Actor extends BaseObject {
     protected preloadAssets: string[] = [
         BombSound
     ]
     public static dimensions = {
-        width: 140,
-        height: 140
+        width: 100,
+        height: 100
     }
 
     private rotation = 0;
     protected container: Pixi.Container = {} as Pixi.Container;
-    private mortals: Mortar[] = [];
+    protected mortarContainer: Pixi.Container = {} as Pixi.Container;
+    protected cannon: Pixi.Container = {} as Pixi.Container;
+    protected base: Pixi.Container = {} as Pixi.Container;
+    private mortars = new Map<string, Mortar>();;
 
     public static getDimensions (): {width: number, height: number} {
         const height = 150;
@@ -49,32 +54,49 @@ export class Actor extends BaseObject {
     }
 
     private setup (pixiApp: Pixi.Application) {
-        const sprite = Pixi.Sprite.from(img);
+        this.mortarContainer = new Pixi.Container();
+        this.createCannon();
+        this.createBase();
+        pixiApp.stage.addChild(this.mortarContainer);
+        pixiApp.stage.addChild(this.base);
+        pixiApp.stage.addChild(this.cannon);
+        
+    }
 
-        sprite.width = Actor.dimensions.width;
-        sprite.height = Actor.dimensions.height;
+    private createBase = () => {
+        const container = new Pixi.Container();
+        const base = Pixi.Sprite.from(imgBase);
+        container.width = Actor.dimensions.width;
+        container.height = Actor.dimensions.height;
+        base.width = Actor.dimensions.width;
+        base.height = Actor.dimensions.height;
+        container.addChild(base);
+        this.centerContainer(container);
+        this.base = container;
+    }
 
-        this.container = new Pixi.Container();
+    private createCannon = () => {
+        const container = new Pixi.Container();
+        const cannon = Pixi.Sprite.from(imgCannon);
+        container.addChild(cannon);
+        container.width = Actor.dimensions.width;
+        container.height = Actor.dimensions.height;
+        cannon.width = Actor.dimensions.width;
+        cannon.height = Actor.dimensions.height;
+        this.centerContainer(container);
+        this.cannon = container;
+    }
 
-        this.container.width = Actor.dimensions.width;
-        this.container.height = Actor.dimensions.height;
-
-        this.container.addChild(sprite);
-
+    private centerContainer = (container: Pixi.Container) => {
         const {centerX: x, centerY: y} = ApplicationScene.getCenterPos();
-
-        this.container.position = {x, y}
-        this.container.pivot = {
+        container.width = Actor.dimensions.width;
+        container.height = Actor.dimensions.height;
+        container.position = {x, y};
+        
+        container.pivot = {
             x: Actor.dimensions.width / 2,
             y: Actor.dimensions.height / 2
         }
-
-        pixiApp.ticker.add(() => {
-            this.container.rotation = this.rotation;
-        })
-
-        pixiApp.stage.addChild(this.container);
-        
     }
 
     public moveHandler = (e: MouseEvent) => {
@@ -82,19 +104,56 @@ export class Actor extends BaseObject {
         this.rotation = Actor.getAngle(x, y)
     }
 
+    public tickHandler = () => {
+        this.cannon.rotation = this.rotation;
+        this.mortars.forEach((mortar) => {
+            mortar.move();
+        })
+    }
+
     private fireMortar = (e: MouseEvent) => {
         const { clientX, clientY } = e;
         this.playSound(BombSound)
-        const mortar = new Mortar(this.pixiApp, clientX, clientY);
-        this.mortals.push(mortar)
+        const id = this.createMortarId();
+        const mortar = new Mortar(id, clientX, clientY);
+        this.mortars.set(id, mortar);
+        this.mortarContainer.addChild(mortar.getContainer())
+    }
+
+    private createMortarId = (): string => {
+        const id = uuid();
+
+        if (this.mortars.has(id)) {
+            return this.createMortarId();
+        }
+
+        return uuid()
     }
 
     public clickHandler = (e: MouseEvent) => {
        this.fireMortar(e);
     }
 
+    protected handleWindowResize = () => {
+        this.centerContainer(this.container);
+        this.centerContainer(this.cannon);
+    }
+
+    public getMortars = () => {
+        return this.mortars;
+    }
+
+    public removeMortar = (id: string) => {
+        const mortar = this.mortars.get(id);
+        if (!mortar) {
+            return;
+        }
+
+        this.mortarContainer.removeChild(mortar.getContainer());
+        mortar.destroy();
+        this.mortars.delete(id);
+
+    }
 
 }
-
-
 

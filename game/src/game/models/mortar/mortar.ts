@@ -1,13 +1,13 @@
 import { BaseObject } from "game/library/base";
 import { Actor as Cannon } from "game/models/actor/actor";
-import { Application, Container, Sprite } from "pixi.js";
+import * as Pixi from "pixi.js";
 import { ApplicationScene } from "game/scene/scene";
+import { Application } from "game/main/application";
 import BombPic from './assets/Bomb.png';
 import BounceSound from 'game/assets/audio/WAV/Interaction_Soft_Stone_02.wav';
-
+import { Rectangle } from 'game/main/types'
 export class Mortar extends BaseObject {
-
-    private container: Container = {} as Container;
+    private container: Pixi.Container = {} as Pixi.Container;
     private position = {
         x: 0,
         y: 0
@@ -28,21 +28,21 @@ export class Mortar extends BaseObject {
         y: 0
     }
 
+
     private stop = false;
     /**
      * Initialise Mortar Object to fire a weapon from a known coordinate
-     * @param {Application} app 
+     * @param {Application} pixiApp 
      * @param {number} mouseX mouse position x
      * @param {number} mouseY mouse position y
      */
-    constructor (app: Application, mouseX: number, mouseY: number) {
+    constructor (private id: string, mouseX: number, mouseY: number) {
         super();
         this.render();
         this.setInitialCoordinates(mouseX, mouseY);
         this.setInitialSpeed(mouseX, mouseY)
         this.positionObject();
-        app.stage.addChild(this.container);
-        app.ticker.add(this.move);
+        
     }
 
     /**
@@ -82,7 +82,7 @@ export class Mortar extends BaseObject {
         
     }
 
-    private move = () => {
+    public move = () => {
        
         const {left, right, top, bottom} = this.getBoundaries();
         let {x, y} = this.motion,
@@ -90,10 +90,6 @@ export class Mortar extends BaseObject {
 
         const {x: posX, y: posY} = this.container.position;
         //const mortarNextRight = posX + this.dimensions.width + y;
-
-        if (this.container.position.y < top || this.container.position.y > bottom || this.stop) {
-            return;
-        }
 
         x += this.forceAdd.x;
         y += this.forceAdd.y;
@@ -128,26 +124,9 @@ export class Mortar extends BaseObject {
         }
     }
 
-    private moveObjectBack = () => {
-        this.container.rotation += 0.01;
-        this.container.position.y += this.motion.y;
-        this.container.position.x += this.motion.x;
-
-        const {left, right, top, bottom} = this.getBoundaries()
-    
-        if (this.container.position.x + this.dimensions.width >= right ||
-            this.container.position.x <= left) {
-            this.motion.x = -this.motion.x;
-            this.playSound(BounceSound);
-        }
-
-        if (this.container.position.y + this.dimensions.height >= bottom
-            || this.container.position.y <= top) {
-            this.motion.y = -this.motion.y;
-            this.playSound(BounceSound);
-        }
+    private actionBoundary () {
+        
     }
-
 
     private resetForceAdd () {
         this.forceAdd = {
@@ -167,11 +146,11 @@ export class Mortar extends BaseObject {
 
         const {width, height} = this.dimensions;
 
-        const container = new Container();
+        const container = new Pixi.Container();
         container.width = width;
         container.height = height;
 
-        const sprite = Sprite.from(BombPic);
+        const sprite = Pixi.Sprite.from(BombPic);
         sprite.width = width;
         sprite.height = height;
 
@@ -199,52 +178,36 @@ export class Mortar extends BaseObject {
     }
 
 
-}
+    protected handleWindowResize = () => {
+        const { width: oWidth, height: oHeight } = this.__screenDimensions;
+        const { width, height } = ApplicationScene.getWindowDimensions();
 
-/**
- *  private moveMortar = () => {
-       
-        const {left, right, top, bottom} = this.getBoundaries();
-        let {x, y} = this.motion,
-            playSound = false;
+        let { x, y } = this.container.position;
+        x -=  oWidth - width;
+        y -= oHeight - height;
 
-        const {x: posX, y: posY} = this.container.position;
-        //const mortarNextRight = posX + this.dimensions.width + y;
-
-        if (this.container.position.y < top || this.container.position.y > bottom || this.stop) {
-            return;
+        this.container.position = {
+            x, y
         }
 
-        x += this.forceAdd.x;
-        y += this.forceAdd.y;
+        this.__screenDimensions = {width, height}
+    }
 
-        this.resetForceAdd()
+    public getId = () => {
+        return this.id
+    }
 
-        if ((posY + y <= top && this.motion.y < 0) || (posY + y >= bottom && this.motion.y > 0)) {
-            const target = (this.motion.y < 0 ? top : bottom) - posY;
-            const balance = y - target;
-            y = target;
-            this.forceAdd.y -= balance;
-            this.motion.y *= -1;
-            playSound = true;
-            this.stop = true;
-        }
+    public getContainer = () => {
+        return this.container;
+    }
 
-        if ((posX + x <= left && this.motion.x < 0) || (posX + x >= right && this.motion.x > 0)) {
-            const target = (this.motion.x < 0 ? left : right) - posX;
-            const balance = x - target;
-            x = target;
-            this.forceAdd.x -= balance;
-            this.motion.x *= -1;
-            playSound = true;
-            this.stop = true;
-        }
-
-        this.container.position.y += y;
-        this.container.position.x += x;
-
-        if (playSound) {
-            this.playSound(BounceSound);
+    public getRectange = (): Rectangle => {
+        return {
+            x: this.container.position.x,
+            y: this.container.position.y,
+            width: this.container.width,
+            height: this.container.height
         }
     }
- */
+
+}

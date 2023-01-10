@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
-  background-color: yellow;
+  background-color: #fff;
   canvas {
     display: block;
     width: 100%;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   }
 
   position: relative;
-  ${({grid}: {grid?: boolean}) => grid ? `
+  ${({grid}: {grid?: boolean, src: string}) => grid ? `
       &::before, &::after {
       height: 1px;
       background-color: #fff;
@@ -31,5 +31,11 @@ export const Wrapper = styled.div`
     }
 
   ` : ''}
+
+
+${({src}: {src: string}) => `
+    background-image: url(${src});
+    background-size: cover;
+`}
   
 `

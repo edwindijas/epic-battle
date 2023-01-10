@@ -2,8 +2,8 @@
 import { Application } from './main/application';
 import React, { useEffect, useRef } from 'react';
 import * as StyEle from './styles'
+import background from 'assets/background/background.jpg'
 
-const application = new Application();
 
 export const Game = () => {
 
@@ -12,7 +12,8 @@ export const Game = () => {
 
   useEffect(() => {
 
-    
+    const application = new Application();
+
     if (!ref.current) {
       return;
     }
@@ -20,17 +21,18 @@ export const Game = () => {
     const divRef = ref.current;
 
     /*@ts-ignore */
-    divRef.appendChild(application.getView());
+    //divRef.appendChild(application.getView());
 
     return () => {
       /*@ts-ignore */
-      divRef.removeChild(application.getView())
+      //divRef.removeChild(application.getView());
+      application.destroy()
     }
 
   }, [])
 
   return (
-   <StyEle.Wrapper grid ref={ref} />
+   <StyEle.Wrapper ref={ref} src={background} />
   );
 }
 
