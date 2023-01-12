@@ -3,19 +3,35 @@ import * as Pixi from 'pixi.js'
 import { ApplicationScene } from 'game/scene/scene';
 import { BugsHandler } from './bugsHandler';
 import { Rectangle } from './types';
+import gameSound from "game/assets/audio/WAV/Music_Loop.wav"
+import {v4 as uuid} from 'uuid'
+import { produce } from "immer"
+
+import { AddStatListener, RemoveStatListener, StatListener } from 'models/Stat';
 
 Pixi.settings.RESOLUTION = window.devicePixelRatio;
 
 export class Application {
+    private static DEFAULT_STAT = {
+        life: 100,
+        score: 0,
+        maxLife: 100
+    }
+
     private actor: Actor = {} as Actor;
     private pixiApp: Pixi.Application = {} as Pixi.Application;
     private scene: ApplicationScene = {} as ApplicationScene;
     private bugHandler: BugsHandler = {} as BugsHandler;
+    private paused = false;
+    private gameAudio: HTMLAudioElement = {} as HTMLAudioElement;
+    private statListener = new Map<string, StatListener>;
+    private actorStat = produce(Application.DEFAULT_STAT, draft => draft);
 
     private pixiAppDefaults = {
         background: '#444',
-        resizeTo: window,
-        backgroundAlpha: 0
+        backgroundAlpha: 0,
+        width: 800,
+        height: 800
     }
 
     constructor () {
@@ -23,9 +39,30 @@ export class Application {
         this.scene = new ApplicationScene(this, this.pixiApp);
         this.bugHandler = new BugsHandler(this, this.pixiApp, this.scene);
         this.actor = new Actor(this, this.pixiApp);
-        this.bindEventHandlers()
+        this.bindEventHandlers();
+        this.gameAudio = new Audio(gameSound);
+        this.gameAudio.volume = 0.5;
+        this.gameAudio.loop = true;
+    }
+
+    public start = () => {
+        this.gameAudio.play();
         this.attachEventHanlders();
-        this.pixiApp.ticker.add(this.tickerHandler)
+        this.pixiApp.ticker.add(this.tickerHandler);
+        this.bugHandler.start()
+    }
+
+    public restart = () => {
+        this.actorStat = produce(this.actorStat, draft => draft)
+    }
+
+    public pause = () => {
+        this.bugHandler.pause();
+        this.removeEventListeners();
+    }
+
+    public static resume = () => {
+
     }
 
     private rectanglesColliding (rect1: Rectangle, rect2: Rectangle) {
@@ -45,10 +82,16 @@ export class Application {
     }
 
     public clickHandler (e: MouseEvent) {
+        if (this.paused) {
+            return;
+        }
         this.actor.clickHandler(e);
     }
 
     public moveHandler (e: MouseEvent) {
+        if (this.paused) {
+            return;
+        }
         this.actor.moveHandler(e);
     }
 
@@ -68,6 +111,7 @@ export class Application {
         this.scene.destroy();
         this.pixiApp.destroy();
         this.bugHandler.destroy();
+        this.gameAudio.pause();
     }
 
     private bindEventHandlers = () => {
@@ -76,6 +120,9 @@ export class Application {
     }
 
     private tickerHandler = () => {
+        if (this.paused) {
+            return;
+        }
         this.actor.tickHandler()
         this.bugHandler.tickHandler()
         this.detectCollision();
@@ -92,6 +139,7 @@ export class Application {
                 if (this.rectanglesColliding(mortarRect, bugRect)) {
                     this.bugHandler.removeBug(bug.getId());
                     this.actor.removeMortar(mortar.getId())
+                    this.addScore(1);
                 }
             })
         })
@@ -102,9 +150,59 @@ export class Application {
 
             if (this.rectanglesColliding(bugRect, actRect)) {
                 this.bugHandler.removeBug(bug.getId())
+                this.addLife(-20);
             }
         })
 
+    }
+
+    private addScore = (score: number) => {
+
+        this.actorStat = produce(this.actorStat, (draft) => {
+            draft.score += score
+            return draft;
+        })
+
+        this.pushStat();
+    }
+
+    private addLife = (life: number) => {
+        this.actorStat = produce(this.actorStat, (draft) => {
+            draft.life += life
+            return draft;
+        })
+
+        this.pushStat();
+    }
+
+    private pushStat = () => {
+        this.statListener.forEach((listener) => {
+            listener(this.actorStat);
+        })
+    }
+
+    public addStatListener: AddStatListener = (statListener: StatListener) => {
+        const id = this.getListenerId();
+        this.statListener.set(id, statListener);
+        this.pushStat();
+        return id;
+       
+    }
+
+    public removeStatListener: RemoveStatListener = (id: string) => {
+        this.statListener.delete(id)
+    }
+
+    public reset = () => {
+
+    }
+
+    private getListenerId = () :string => {
+        const id = uuid();
+        if (this.statListener.has(id)) {
+            return this.getListenerId()
+        }
+        return id;
     }
 
 }

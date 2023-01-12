@@ -13,4 +13,9 @@ export interface Rectangle {
     y: number;
 }
 
+export interface Stat {
+    score: number
+}
+
 export type bugs  = Map<string, Bug>
+

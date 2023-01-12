@@ -1,26 +1,22 @@
 {
   "files": {
-    "main.js": "./static/js/main.dc79c6fb.js",
+    "main.js": "./static/js/main.7e0bf353.js",
     "static/js/787.26bb69cf.chunk.js": "./static/js/787.26bb69cf.chunk.js",
-    "static/media/06_Forest.png": "./static/media/06_Forest.2ecdfc49c9d344a0d426.png",
-    "static/media/04_Forest.png": "./static/media/04_Forest.ce3c25064a6b1287e916.png",
+    "static/media/Music_Loop.wav": "./static/media/Music_Loop.bc059ded20cb1d601183.wav",
+    "static/media/floral.svg": "./static/media/floral.cb32b94d0f5f7d8db5c82997e32856db.svg",
     "static/media/Bomb.png": "./static/media/Bomb.74ef481ef5bb05b89e10.png",
-    "static/media/09_Forest.png": "./static/media/09_Forest.1822e0ebb73e0e5d6f39.png",
-    "static/media/actor.png": "./static/media/actor.9d42ae17d9459ed4a745.png",
-    "static/media/Spell_Explosion.wav": "./static/media/Spell_Explosion.d57c4ef1a13c4102df79.wav",
-    "static/media/07_Forest.png": "./static/media/07_Forest.6a7a2c18101f729df6e9.png",
-    "static/media/08_Forest.png": "./static/media/08_Forest.19519dec6bce1da83f9a.png",
-    "static/media/01_Mist.png": "./static/media/01_Mist.f79e46a8cb1bfeb9b567.png",
-    "static/media/02_Bushes.png": "./static/media/02_Bushes.db4aa977109c84ad9544.png",
-    "static/media/03_Particles.png": "./static/media/03_Particles.e35c4e49e5c29c4193ce.png",
-    "static/media/05_Particles.png": "./static/media/05_Particles.2e33701eec26ed66c5de.png",
+    "static/media/base.png": "./static/media/base.0bc57872ffd435730542.png",
+    "static/media/cannon.png": "./static/media/cannon.6eabe96fbc707d821f4b.png",
+    "static/media/Interaction_Hard_Stone.wav": "./static/media/Interaction_Hard_Stone.069265606b05bd6e7cc0.wav",
+    "static/media/Action_Obtain_Point_04.wav": "./static/media/Action_Obtain_Point_04.33cdbeec3d9df26d7e33.wav",
+    "static/media/bug.png": "./static/media/bug.7d3cffa5f73da8830a9d.png",
+    "static/media/bug-2.png": "./static/media/bug-2.c17841f6d57b489f5a5f.png",
     "static/media/Interaction_Soft_Stone_02.wav": "./static/media/Interaction_Soft_Stone_02.e4af42337959223c4be3.wav",
-    "static/media/10_Sky.png": "./static/media/10_Sky.121e441a2339861e31ed.png",
     "index.html": "./index.html",
-    "main.dc79c6fb.js.map": "./static/js/main.dc79c6fb.js.map",
+    "main.7e0bf353.js.map": "./static/js/main.7e0bf353.js.map",
     "787.26bb69cf.chunk.js.map": "./static/js/787.26bb69cf.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.dc79c6fb.js"
+    "static/js/main.7e0bf353.js"
   ]
 }

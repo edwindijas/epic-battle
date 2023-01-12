@@ -4,7 +4,7 @@ import imgBase from "game/assets/models/actor/base.png"
 import { BaseObject } from "game/library/base";
 import { Application } from "game/main/application";
 import { Mortar } from "game/models/mortar/mortar";
-import BombSound from 'game/assets/audio/WAV/Spell_Explosion.wav';
+import BombSound from 'game/assets/audio/WAV/Interaction_Hard_Stone.wav';
 import { ApplicationScene } from "game/scene/scene";
 import {v4 as uuid} from 'uuid'
 import { Rectangle } from "game/main/types";
@@ -23,7 +23,7 @@ export class Actor extends BaseObject {
     protected mortarContainer: Pixi.Container = {} as Pixi.Container;
     protected cannon: Pixi.Container = {} as Pixi.Container;
     protected base: Pixi.Container = {} as Pixi.Container;
-    private mortars = new Map<string, Mortar>();;
+    private mortars = new Map<string, Mortar>();
 
     public static getDimensions (): {width: number, height: number} {
         const height = 150;
@@ -44,7 +44,7 @@ export class Actor extends BaseObject {
      * @return number mouseAngle from center in radians
      */
     public static getAngle = (mouseX: number, mouseY: number): number => {
-        const {centerY, centerX} = ApplicationScene.getCenterPos();
+        const {centerY, centerX} = ApplicationScene.getWindowCenterPos();
         return Math.atan2(centerY - mouseY, centerX - mouseX) - Math.PI * 0.5
     }
 

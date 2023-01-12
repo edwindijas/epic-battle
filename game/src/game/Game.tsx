@@ -1,38 +1,54 @@
 
 import { Application } from './main/application';
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState} from 'react';
 import * as StyEle from './styles'
 import { FloralBackground } from 'components/floralBackground/FloralBackground';
+import { useSquare } from 'hooks/useSquare';
+import { GameStat } from 'features/gameStat/GameStat';
+import { AddStatListener } from 'models/Stat';
+
+const mousePointer = "crosshair";
+
+const application = new Application();
 
 
 export const Game = () => {
-
-  
+  const length = useSquare();
   const ref = useRef<HTMLDivElement>(null);
+  const keyDownHandler = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
 
+    }
+  }, [])
+  
   useEffect(() => {
-
-    const application = new Application();
-
     if (!ref.current) { return; }
 
     const divRef = ref.current;
+    
 
     /*@ts-ignore */
     divRef.appendChild(application.getView());
 
+    window.addEventListener('keydown', keyDownHandler)
+
     return () => {
       /*@ts-ignore */
       divRef.removeChild(application.getView());
-      application.destroy()
+
+      window.removeEventListener('keydown', keyDownHandler)
+      application.reset()
     }
 
   }, [])
 
   return (
     <>
-      <FloralBackground />
-      <StyEle.Wrapper grid ref={ref} />
+      <FloralBackground mousePointer={mousePointer} />
+      <GameStat listener={application.addStatListener} removeListener={application.removeStatListener} />
+      <StyEle.Wrapper  >
+        <StyEle.CanvasWrapper length={length} ref={ref} />
+      </StyEle.Wrapper>
     </>
    
   );

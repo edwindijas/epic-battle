@@ -67,15 +67,17 @@ export class Mortar extends BaseObject {
     }
 
     private setInitialSpeed = (mouseX: number, mouseY: number) => {
+
         const {centerX, centerY} = ApplicationScene.getCenterPos();
+        const {adjustX, adjustY} = ApplicationScene.getAdjustMousePos(mouseX, mouseY);
         const {x, y} = this.position;
 
         const distX = Math.abs(centerX - x);
         const distY = Math.abs(centerY - y);
         const sum = distX + distY;
 
-        const speedX = distX / sum * (mouseX > centerX ? 1 : -1);
-        const speedY = distY / sum * (mouseY > centerY ? 1 : -1)
+        const speedX = distX / sum * (adjustX > centerX ? 1 : -1);
+        const speedY = distY / sum * (adjustY > centerY ? 1 : -1)
 
         this.motion.x *= speedX;
         this.motion.y *= speedY;

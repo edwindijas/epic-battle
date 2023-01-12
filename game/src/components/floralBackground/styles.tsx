@@ -2,9 +2,12 @@ import { uniPos } from "library/main";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    ${({length}: {length: number}) => `
+    ${({length, mousePointer}: {length: number, mousePointer?: string}) => `
         width: ${length}px;
         height: ${length}px;
+        ${mousePointer ? `
+            cursor: url(${mousePointer}), crosshair;
+        `: ''}
     `}
 
     ${uniPos(0)};
@@ -15,5 +18,5 @@ export const Wrapper = styled.div`
 
 export const Img = styled.img`
     position: absolute;
-    ${uniPos(-30, [], '%')};
+    ${uniPos(-20, [], '%')};
 `

@@ -3,13 +3,10 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
-  canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   ${({grid}: {grid?: boolean}) => grid ? `
       &::before, &::after {
       height: 1px;
@@ -30,5 +27,23 @@ export const Wrapper = styled.div`
     }
 
   ` : ''}
-  
+`
+
+export const CanvasWrapper = styled.div`
+    ${({length}: {length: number}) => `
+        width: ${length}px;
+        height: ${length}px;
+    `}
+
+     canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+`
+export const GameWrapper = styled.div`
+    ${({length}: {length: number}) => `
+        width: ${length}px;
+        height: ${length}px;
+    `}
 `

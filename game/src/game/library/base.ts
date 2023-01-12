@@ -32,8 +32,9 @@ export class BaseObject {
         this.__removeEventListeners()
     }
 
-    protected playSound(src: string) {
+    protected playSound(src: string, volume = 1) {
         const audio = new Audio(src);
+        audio.volume = volume
         audio.play();
     }
 

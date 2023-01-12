@@ -4,9 +4,9 @@ import { Application } from 'game/main/application';
 
 export class ApplicationScene extends BaseObject {
     private container: Pixi.Container = {} as Pixi.Container;
-    public static borderWidth = 2;
+    public static borderWidth = 0;
     public static marginTop = 100;
-    public static margin = 10;
+    public static Margin = 20;
 
     protected screenDimensions = {
         width: 0,
@@ -16,17 +16,34 @@ export class ApplicationScene extends BaseObject {
     public static getSquareLength = () => {
         const width = window.innerWidth,
             height = window.innerHeight;
-            return width <  height ? width : height;
+
+        let length = width < height ? width : height;
+            length = length > 820 ? 820 : length;
+            return length -= ApplicationScene.Margin;
+
+    }
+
+    public static getAdjustMousePos = (mouseX: number, mouseY: number) => {
+        const {innerWidth, innerHeight} = window,
+            length = ApplicationScene.getSquareLength(),
+            marginLeft = (innerWidth - length) / 2,
+            marginTop = (innerHeight - length) / 2,
+            adjustX = mouseX - marginLeft,
+            adjustY = mouseY - marginTop
+        return {
+            adjustX,
+            adjustY
+        }
+
     }
 
     public static getBoundaries = (): {top: number, left: number, bottom: number, right: number} => {
-        
-        const squareLength = this.getSquareLength(),
-            {width, height} = ApplicationScene.getWindowDimensions(),
-            top = ((height - squareLength) / 2) + this.borderWidth,
-            bottom = height - top - this.borderWidth,
-            left  = ((width - squareLength) / 2) + this.borderWidth,
-            right = window.innerWidth - left - this.borderWidth;
+        const borderWidth = ApplicationScene.borderWidth;
+        const squareLength = this.getSquareLength();
+        const top = borderWidth,
+            left = borderWidth,
+            bottom = squareLength - (borderWidth),
+            right = squareLength - (borderWidth);
 
         return {
             top,
@@ -37,10 +54,23 @@ export class ApplicationScene extends BaseObject {
 
     }
 
+    public static getWindowBoundaries = () => {
+        const {innerWidth, innerHeight} = window;
+    }
+
     public static getCenterPos = (): {centerX: number, centerY: number} => {
+        const center = ApplicationScene.getSquareLength() / 2
         return {
-            centerX: window.innerWidth / 2,
-            centerY: window.innerHeight / 2
+            centerX: center,
+            centerY: center
+        }
+    }
+
+    public static getWindowCenterPos = () => {
+        const {innerWidth, innerHeight} = window;
+        return {
+            centerX: innerWidth / 2,
+            centerY: innerHeight / 2
         }
     }
 
@@ -54,7 +84,7 @@ export class ApplicationScene extends BaseObject {
     drawBoundaries () {
         const container = this.container;
         const graphics = new Pixi.Graphics();
-            graphics.lineStyle(ApplicationScene.borderWidth, 0x568045)
+            graphics.lineStyle(ApplicationScene.borderWidth, 0xfffffff)
         const {left, right, bottom, top} = ApplicationScene.getBoundaries();
 
         const height = bottom - top + ApplicationScene.borderWidth * 2;

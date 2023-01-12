@@ -4,6 +4,7 @@ import { bugs } from "./types";
 import { Bug } from "game/models/bugs/bug";
 import { v4 as uuid } from 'uuid';
 import { ApplicationScene } from "game/scene/scene";
+import soundBugDestroyed from "game/assets/audio/WAV/Action_Obtain_Point_04.wav"
 
 export class BugsHandler {
     private speed = 2000;
@@ -11,13 +12,20 @@ export class BugsHandler {
     private bugCoordinate = {};
     private container: Pixi.Container = {} as Pixi.Container;
     private bugs: bugs = new Map<string, Bug>();
+    private paused = false;
 
     constructor (private app: Application, private pixiApp: Pixi.Application, private scene: ApplicationScene) {
-
         this.container = new Pixi.Container();
         pixiApp.stage.addChild(this.container);
-        this.addBug();
+        
+    }
 
+    public start = () => {
+        this.addBug();
+    }
+
+    public pause = () => {
+        window.clearTimeout(this.timeout)
     }
 
     private addBug () {
@@ -40,8 +48,8 @@ export class BugsHandler {
         }
         this.container.removeChild(bug.getContainer());
         bug.destroy();
-        this.bugs.delete(id);
-    
+        this.bugs.delete(id);   
+        this.playSound(soundBugDestroyed);
     }
 
     private getPoint = () => {
@@ -91,6 +99,11 @@ export class BugsHandler {
 
     public getBugs = () => {
         return this.bugs;
+    }
+
+    private playSound = (src: string) => {
+        const audio = new Audio(src);
+        audio.play();
     }
 
 }
