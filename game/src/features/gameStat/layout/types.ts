@@ -1,10 +1,11 @@
+import { GameData } from "models/Stat";
+
 export interface GameScoreLayoutProps {
-    score: number,
-    life: number,
-    maxLife: number
+    stat: GameData,
+    gamePause: () => void,
 }
 
-export interface EleWrapperProps {
-    top: number;
-    left: number
+export interface StyEleWrapper {
+
 }
+

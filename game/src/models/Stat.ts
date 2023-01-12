@@ -1,12 +1,15 @@
-export interface GameStat {
+export interface GameData {
     score: number,
     life: number,
-    maxLife: number,
+    lifeMax: number,
+    multiplier: number,
+    armo: number,
+    armoMax: number
 }
 
 
 
-export type StatListener = (score: GameStat) => void
+export type StatListener = (score: GameData) => void
 
 export type AddStatListener = (listener: StatListener) => string
 

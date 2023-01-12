@@ -1,15 +1,20 @@
-import { AddStatListener, GameStat as Stat, RemoveStatListener } from "models/Stat";
-import { removeListener } from "process";
-import { useCallback, useEffect, useState } from "react";
+import { GameData } from "models/Stat";
+import { useEffect, useState } from "react";
 import { GameStatLayout } from "./layout/GameStatLayout";
+import { GameStatProps } from "./types";
 
 
-export const GameStat = ({listener, removeListener} : {listener: AddStatListener, removeListener: RemoveStatListener}) => {
+export const GameStat = (props : GameStatProps) => {
 
-    const [stat, setState] = useState<Stat>({
+    const {listener, removeListener} = props;
+
+    const [stat, setState] = useState<GameData>({
         score: 0,
         life: 0,
-        maxLife: 0
+        lifeMax: 0,
+        armo: 0,
+        armoMax: 0,
+        multiplier: 1
     })
 
 
@@ -22,5 +27,8 @@ export const GameStat = ({listener, removeListener} : {listener: AddStatListener
 
     
 
-    return <GameStatLayout {...stat} />
+    return <GameStatLayout 
+        stat={stat}
+        {...props}
+    />
 }

@@ -7,15 +7,18 @@ import gameSound from "game/assets/audio/WAV/Music_Loop.wav"
 import {v4 as uuid} from 'uuid'
 import { produce } from "immer"
 
-import { AddStatListener, RemoveStatListener, StatListener } from 'models/Stat';
+import { AddStatListener, GameData, RemoveStatListener, StatListener } from 'models/Stat';
 
 Pixi.settings.RESOLUTION = window.devicePixelRatio;
 
 export class Application {
-    private static DEFAULT_STAT = {
-        life: 100,
-        score: 0,
-        maxLife: 100
+    private static DEFAULT_STAT: GameData = {
+        life: 50,
+        score: 9999999,
+        lifeMax: 100,
+        multiplier: 99,
+        armo: 10,
+        armoMax: 20
     }
 
     private actor: Actor = {} as Actor;
