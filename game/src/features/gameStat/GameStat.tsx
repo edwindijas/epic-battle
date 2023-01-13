@@ -2,12 +2,10 @@ import { GameData } from "models/Stat";
 import { useEffect, useState } from "react";
 import { GameStatLayout } from "./layout/GameStatLayout";
 import { GameStatProps } from "./types";
+import { Application } from "game/main/application";
 
 
 export const GameStat = (props : GameStatProps) => {
-
-    const {listener, removeListener} = props;
-
     const [stat, setState] = useState<GameData>({
         score: 0,
         life: 0,
@@ -19,9 +17,10 @@ export const GameStat = (props : GameStatProps) => {
 
 
     useEffect(() => {
-        const id = listener(setState);
+        const app = window.app as Application
+        const id =app.addStatListener(setState);
         return () => {
-            removeListener(id)
+            app.removeStatListener(id)
         }
     }, [setState])
 

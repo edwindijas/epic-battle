@@ -1,21 +1,21 @@
 
-import { Application } from './main/application';
 import React, { useCallback, useEffect, useRef, useState} from 'react';
 import * as StyEle from './styles'
 import { FloralBackground } from 'components/floralBackground/FloralBackground';
 import { useSquare } from 'hooks/useSquare';
 import { GameStat } from 'features/gameStat/GameStat';
 import { AddStatListener } from 'models/Stat';
+import { Application } from './main/application';
 
 const mousePointer = "crosshair";
 
-const application = new Application();
 
 
 export const Game = () => {
   const length = useSquare();
   const ref = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
+  const app = window.app as Application;
 
   const gamePause = useCallback(() => {
     console.log('paused');
@@ -31,7 +31,7 @@ export const Game = () => {
 
   const keyDownHandler = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
-
+      app.pause()
     }
   }, [])
   
@@ -40,18 +40,19 @@ export const Game = () => {
 
     const divRef = ref.current;
     
+    app.start();
 
     /*@ts-ignore */
-    divRef.appendChild(application.getView());
+    divRef.appendChild(app.getView());
 
     window.addEventListener('keydown', keyDownHandler)
 
     return () => {
       /*@ts-ignore */
-      divRef.removeChild(application.getView());
+      divRef.removeChild(app.getView());
 
       window.removeEventListener('keydown', keyDownHandler)
-      application.reset()
+      app.reset()
     }
 
   }, [])
@@ -59,13 +60,8 @@ export const Game = () => {
   return (
     <>
       <FloralBackground mousePointer={mousePointer} />
-      <GameStat 
-        listener={application.addStatListener}
-        removeListener={application.removeStatListener}
+      <GameStat
         paused={paused}
-        gamePause={gamePause}
-        gameResume={gameResume}
-        gameRestart={gameRestart}
       />
       <StyEle.Wrapper  >
         <StyEle.CanvasWrapper length={length} ref={ref} />

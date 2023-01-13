@@ -1,3 +1,4 @@
+import { Application } from 'game/main/application';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -6,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
+window.app = new Application();
 const waitTime = process.env.NODE_ENV === 'production' ? 6000 : 0;
 
 window.setTimeout(() => {
@@ -16,6 +17,8 @@ window.setTimeout(() => {
     </React.StrictMode>
   );
 }, waitTime)
+
+
 
 
 // If you want to start measuring performance in your app, pass a function

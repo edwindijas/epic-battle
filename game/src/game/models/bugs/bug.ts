@@ -26,6 +26,7 @@ export class Bug extends BaseObject {
     }
 
     private container:Pixi.Container =  {} as Pixi.Container;
+    private bug: Pixi.AnimatedSprite = {} as Pixi.AnimatedSprite;
 
     constructor (private bugsHandler: BugsHandler,
         private id: string, 
@@ -35,6 +36,10 @@ export class Bug extends BaseObject {
         super();
         this.render(position);
         this.setInitialSpeed();
+    }
+
+    public pause () {
+        this.bug.stop();
     }
 
     public move = () => {
@@ -71,9 +76,9 @@ export class Bug extends BaseObject {
         bug.width = this.dimensions.width;
         bug.height = this.dimensions.height;
         bug.play();
-
         bug.animationSpeed = this.animationSpeed;
         this.container.addChild(bug)
+        this.bug = bug;
 
         this.centerPivot(this.container, this.dimensions.width, this.dimensions.height);
         this.container.position = {

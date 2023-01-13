@@ -13,12 +13,12 @@ Pixi.settings.RESOLUTION = window.devicePixelRatio;
 
 export class Application {
     private static DEFAULT_STAT: GameData = {
-        life: 50,
-        score: 9999999,
+        life: 100,
+        score: 0,
         lifeMax: 100,
-        multiplier: 99,
-        armo: 10,
-        armoMax: 20
+        multiplier: 1,
+        armo: 2,
+        armoMax: 2
     }
 
     private actor: Actor = {} as Actor;
@@ -28,10 +28,10 @@ export class Application {
     private paused = false;
     private gameAudio: HTMLAudioElement = {} as HTMLAudioElement;
     private statListener = new Map<string, StatListener>;
-    private actorStat = produce(Application.DEFAULT_STAT, draft => draft);
+    public actorStat = produce(Application.DEFAULT_STAT, draft => draft);
 
     private pixiAppDefaults = {
-        background: '#444',
+        background: 'transparent',
         backgroundAlpha: 0,
         width: 800,
         height: 800
@@ -60,11 +60,32 @@ export class Application {
     }
 
     public pause = () => {
+        this.paused = true;
         this.bugHandler.pause();
         this.removeEventListeners();
+        this.gameAudio.pause();
     }
 
     public static resume = () => {
+
+    }
+
+    public removeUserMortar = () => {
+        this.actorStat = produce(this.actorStat, (draft) => {
+            draft.armo -= 1;
+        })
+        this.pushStat()
+    }
+
+    public addUserMortar = () => {
+        this.actorStat = produce(this.actorStat, (draft) => {
+            draft.armo += 1;
+        })
+        this.pushStat()
+    }
+
+    /** TODO: ADD Mortar function remove from actor */
+    public fireMortar = () => {
 
     }
 
@@ -143,6 +164,7 @@ export class Application {
                     this.bugHandler.removeBug(bug.getId());
                     this.actor.removeMortar(mortar.getId())
                     this.addScore(1);
+                    this.addUserMortar();
                 }
             })
         })
@@ -189,7 +211,6 @@ export class Application {
         this.statListener.set(id, statListener);
         this.pushStat();
         return id;
-       
     }
 
     public removeStatListener: RemoveStatListener = (id: string) => {

@@ -25,7 +25,11 @@ export class BugsHandler {
     }
 
     public pause = () => {
-        window.clearTimeout(this.timeout)
+        window.clearTimeout(this.timeout);
+        this.paused = true;
+        this.bugs.forEach(bug => {
+            bug.pause();
+        })
     }
 
     private addBug () {
@@ -36,8 +40,14 @@ export class BugsHandler {
 
         this.container.addChild(bug.getContainer())
         
+        if (this.paused) {
+            return;
+        }
+
         this.timeout = window.setTimeout(() => {
-            this.addBug()
+            if (!this.paused) {
+                this.addBug()
+            }
         }, this.speed)
     }
 

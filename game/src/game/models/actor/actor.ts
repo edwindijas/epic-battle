@@ -113,12 +113,16 @@ export class Actor extends BaseObject {
     }
 
     private fireMortar = (e: MouseEvent) => {
+        if (this.app.actorStat.armo === 0) {
+            return;
+        }
         const { clientX, clientY } = e;
         this.playSound(BombSound)
         const id = this.createMortarId();
         const mortar = new Mortar(id, clientX, clientY);
         this.mortars.set(id, mortar);
-        this.mortarContainer.addChild(mortar.getContainer())
+        this.mortarContainer.addChild(mortar.getContainer());
+        this.app.removeUserMortar();
     }
 
     private createMortarId = (): string => {

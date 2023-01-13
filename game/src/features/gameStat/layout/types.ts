@@ -1,8 +1,7 @@
 import { GameData } from "models/Stat";
 
 export interface GameScoreLayoutProps {
-    stat: GameData,
-    gamePause: () => void,
+    stat: GameData
 }
 
 export interface StyEleWrapper {

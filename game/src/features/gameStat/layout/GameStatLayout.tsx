@@ -5,8 +5,10 @@ import { IcoPause } from '../assets/IcoPause';
 import { IcoBall } from '../assets/IcoBall';
 import { GameScoreLayoutProps } from './types';
 import { IcoLife } from '../assets/IcoLife';
+import { Application } from 'game/main/application';
 
-export const GameStatLayout = ({stat, gamePause}: GameScoreLayoutProps) => {
+export const GameStatLayout = ({stat}: GameScoreLayoutProps) => {
+    const app = window.app as Application;
     const {score, life, lifeMax, armo, armoMax, multiplier} = stat
     const length = useSquare();
     const lifePer = life / lifeMax * 100;
@@ -27,7 +29,7 @@ export const GameStatLayout = ({stat, gamePause}: GameScoreLayoutProps) => {
                 </StyEle.UserArmo>
             </StyEle.UserProps>
         </StyEle.UserInfo>
-        <StyEle.BtnPause onClick={gamePause} >
+        <StyEle.BtnPause onClick={app.pause} >
             <IcoPause />
         </StyEle.BtnPause>
         <StyEle.GameStatus>
