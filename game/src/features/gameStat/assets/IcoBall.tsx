@@ -4,16 +4,16 @@ export const IcoBall = ({color} : {color: string}) => {
     return <StyEleWrapper color={color} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
     <defs>
       <linearGradient id="linear-gradient" x1="50" y1="100" x2="50" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#2b2b2b"/>
-        <stop offset="0.79" stop-opacity="0"/>
+        <stop offset="0" stopColor="#2b2b2b"/>
+        <stop offset="0.79" stopOpacity="0"/>
       </linearGradient>
       <radialGradient id="radial-gradient" cx="50" cy="50" r="50" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#fff"/>
-        <stop offset="1" stop-opacity="0"/>
+        <stop offset="0" stopColor="#fff"/>
+        <stop offset="1" stopOpacity="0"/>
       </radialGradient>
       <linearGradient id="linear-gradient-2" x1="50" x2="50" y2="100" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#fff"/>
-        <stop offset="0.79" stop-opacity="0"/>
+        <stop offset="0" stopColor="#fff"/>
+        <stop offset="0.79" stopOpacity="0"/>
       </linearGradient>
       <linearGradient id="linear-gradient-3" x1="0" y1="50" x2="100" y2="50" />
     </defs>

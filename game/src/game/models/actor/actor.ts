@@ -135,6 +135,12 @@ export class Actor extends BaseObject {
         return uuid()
     }
 
+    public clearMortars = () => {
+        this.mortars.forEach((mortar, id) => {
+            this.removeMortar(id);
+        })
+    }
+
     public clickHandler = (e: MouseEvent) => {
        this.fireMortar(e);
     }

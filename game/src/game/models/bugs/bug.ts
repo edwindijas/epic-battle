@@ -42,10 +42,14 @@ export class Bug extends BaseObject {
         this.bug.stop();
     }
 
-    public move = () => {
+    public resume () {
+        this.bug.play();
+    }
+
+    public move = (speed = 1) => {
         const {x, y} = this.motion;
-        this.container.position.y += y;
-        this.container.position.x += x;
+        this.container.position.y += y * speed;
+        this.container.position.x += x * speed;
     }
 
     private setInitialSpeed = () => {

@@ -7,12 +7,14 @@ import { ApplicationScene } from "game/scene/scene";
 import soundBugDestroyed from "game/assets/audio/WAV/Action_Obtain_Point_04.wav"
 
 export class BugsHandler {
-    private speed = 2000;
-    private timeout: number | undefined;
-    private bugCoordinate = {};
+    private addTimeDefault = 1000;
+    private addTime = 1000;
+    private addFreq = 10;
+    private interval: number | undefined;
     private container: Pixi.Container = {} as Pixi.Container;
     private bugs: bugs = new Map<string, Bug>();
     private paused = false;
+    
 
     constructor (private app: Application, private pixiApp: Pixi.Application, private scene: ApplicationScene) {
         this.container = new Pixi.Container();
@@ -20,19 +22,21 @@ export class BugsHandler {
         
     }
 
-    public start = () => {
-        this.addBug();
+    public start = (resume = false) => {
+        if (!resume) {
+            this.removeAllbugs();
+            this.addBug();
+        }
     }
 
     public pause = () => {
-        window.clearTimeout(this.timeout);
-        this.paused = true;
         this.bugs.forEach(bug => {
             bug.pause();
         })
     }
 
     private addBug () {
+        console.log('adding bug')
         const id = this.createBugId();
         const points = this.getPoint(); 
         const bug = new Bug(this, id, points );
@@ -43,12 +47,6 @@ export class BugsHandler {
         if (this.paused) {
             return;
         }
-
-        this.timeout = window.setTimeout(() => {
-            if (!this.paused) {
-                this.addBug()
-            }
-        }, this.speed)
     }
 
     public removeBug (id: string) {
@@ -60,6 +58,12 @@ export class BugsHandler {
         bug.destroy();
         this.bugs.delete(id);   
         this.playSound(soundBugDestroyed);
+    }
+
+    private removeAllbugs () {
+        this.bugs.forEach((bug) => {
+            this.removeBug(bug.getId())
+        })
     }
 
     private getPoint = () => {
@@ -96,14 +100,21 @@ export class BugsHandler {
             this.bugs.delete(key);
         })
 
-        if (this.timeout) {
-            window.clearTimeout(this.timeout);
+        if (this.interval) {
+            window.clearTimeout(this.interval);
         }
     }
 
-    public tickHandler = () => {
+    public tickHandler = (speed = 1) => {
+        if (this.addTime <= 0) {
+            this.addBug();
+            this.addTime = this.addTimeDefault;
+        } else {
+            this.addTime -= this.addFreq * speed;
+        }
+
         this.bugs.forEach(bug => {
-            bug.move();
+            bug.move(speed);
         })
     }
 

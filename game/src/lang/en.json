@@ -1,6 +1,9 @@
 {
     "app.next": "next",
     "app.prev": "previous",
+    "app.restart": "restart",
+    "app.quit": "quit",
+    "app.resume": "resume",
     "app.page.home.title": "epic battle",
     "app.page.home.startGame": "start game",
     "app.page.leaderboard.title": "leader's board",
@@ -9,5 +12,7 @@
     "app.feature.leaderboard.lnk.viewLeaderboard": "Show champion board",
     "app.feature.settings.title": "settings",
     "app.feature.settings.music": "background music",
-    "app.feature.settings.sxf": "sound effects"
+    "app.feature.settings.sxf": "sound effects",
+    "app.feature.gamemenu.title.paused": "game paused",
+    "app.feature.gamemenu.title.over": "game over"
 }

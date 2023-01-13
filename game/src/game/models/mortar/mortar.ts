@@ -8,6 +8,7 @@ import BounceSound from 'game/assets/audio/WAV/Interaction_Soft_Stone_02.wav';
 import { Rectangle } from 'game/main/types'
 export class Mortar extends BaseObject {
     private container: Pixi.Container = {} as Pixi.Container;
+    private score = 2;
     private position = {
         x: 0,
         y: 0
@@ -28,8 +29,6 @@ export class Mortar extends BaseObject {
         y: 0
     }
 
-
-    private stop = false;
     /**
      * Initialise Mortar Object to fire a weapon from a known coordinate
      * @param {Application} pixiApp 
@@ -105,7 +104,6 @@ export class Mortar extends BaseObject {
             this.forceAdd.y -= balance;
             this.motion.y *= -1;
             playSound = true;
-            this.stop = true;
         }
 
         if ((posX + x <= left && this.motion.x < 0) || (posX + x >= right && this.motion.x > 0)) {
@@ -115,7 +113,6 @@ export class Mortar extends BaseObject {
             this.forceAdd.x -= balance;
             this.motion.x *= -1;
             playSound = true;
-            this.stop = true;
         }
 
         this.container.position.y += y;
@@ -124,10 +121,6 @@ export class Mortar extends BaseObject {
         if (playSound) {
             this.playSound(BounceSound);
         }
-    }
-
-    private actionBoundary () {
-        
     }
 
     private resetForceAdd () {
@@ -210,6 +203,10 @@ export class Mortar extends BaseObject {
             width: this.container.width,
             height: this.container.height
         }
+    }
+
+    public getScore = (): number => {
+        return this.score;
     }
 
 }

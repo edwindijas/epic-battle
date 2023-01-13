@@ -17,7 +17,7 @@ export interface Rectangle {
 
 export type bugs  = Map<string, Bug>
 
-export type AppEventType = 'start' | 'pause' | 'resume' | 'over' | 'datachanged'
+export type AppEventType = 'start' | 'pause' | 'restart' | 'resume' | 'over' | 'datachanged'
 
 export interface AppEventGeneral {
     event: Exclude<AppEventType, 'datachanged'>,

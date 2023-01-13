@@ -10,7 +10,3 @@ export interface GameData {
 
 
 export type StatListener = (score: GameData) => void
-
-export type AddStatListener = (listener: StatListener) => string
-
-export type RemoveStatListener = (id: string) => void

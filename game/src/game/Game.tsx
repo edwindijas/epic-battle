@@ -4,8 +4,8 @@ import * as StyEle from './styles'
 import { FloralBackground } from 'components/floralBackground/FloralBackground';
 import { useSquare } from 'hooks/useSquare';
 import { GameStat } from 'features/gameStat/GameStat';
-import { AddStatListener } from 'models/Stat';
 import { Application } from './main/application';
+import { GameMenu } from 'features/gameMenu/GameMenu';
 
 const mousePointer = "crosshair";
 
@@ -17,21 +17,13 @@ export const Game = () => {
   const [paused, setPaused] = useState(false);
   const app = window.app as Application;
 
-  const gamePause = useCallback(() => {
-    console.log('paused');
-  }, [])
-
-  const gameResume = useCallback(() => {
-    console.log('resumed')
-  }, [])
-
-  const gameRestart = useCallback(() => {
-    console.log('restarted')
-  }, [])
-
   const keyDownHandler = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
-      app.pause()
+      if (app.paused) {
+        app.resume()
+      } else {
+        app.pause()
+      }
     }
   }, [])
   
@@ -52,7 +44,7 @@ export const Game = () => {
       divRef.removeChild(app.getView());
 
       window.removeEventListener('keydown', keyDownHandler)
-      app.reset()
+      app.pause()
     }
 
   }, [])
@@ -60,9 +52,8 @@ export const Game = () => {
   return (
     <>
       <FloralBackground mousePointer={mousePointer} />
-      <GameStat
-        paused={paused}
-      />
+      <GameStat />
+      <GameMenu />
       <StyEle.Wrapper  >
         <StyEle.CanvasWrapper length={length} ref={ref} />
       </StyEle.Wrapper>

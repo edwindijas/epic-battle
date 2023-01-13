@@ -4,10 +4,12 @@ import { ApplicationScene } from 'game/scene/scene';
 import { BugsHandler } from './bugsHandler';
 import { AppEventListener, AppEventType, Rectangle } from './types';
 import gameSound from "game/assets/audio/WAV/Music_Loop.wav"
+import gameOverSound from "game/assets/audio/WAV/Jingle_Game_Over_01.wav";
+
 import {v4 as uuid} from 'uuid'
 import { produce } from "immer"
 
-import { AddStatListener, GameData, RemoveStatListener, StatListener } from 'models/Stat';
+import { GameData, StatListener } from 'models/Stat';
 
 Pixi.settings.RESOLUTION = window.devicePixelRatio;
 
@@ -17,18 +19,19 @@ export class Application {
         score: 0,
         lifeMax: 100,
         multiplier: 1,
-        armo: 2,
-        armoMax: 2
+        armo: 10,
+        armoMax: 10
     }
 
     private actor: Actor = {} as Actor;
     private pixiApp: Pixi.Application = {} as Pixi.Application;
     private scene: ApplicationScene = {} as ApplicationScene;
     private bugHandler: BugsHandler = {} as BugsHandler;
-    private paused = false;
+    public paused = true;
     private gameAudio: HTMLAudioElement = {} as HTMLAudioElement;
     private statListener = new Map<string, StatListener>;
-    private eventLiseners = new Map<string, AppEventListener>
+    private eventLiseners = new Map<string, AppEventListener>;
+    private speed = 1;
 
 
     public actorStat = produce(Application.DEFAULT_STAT, draft => draft);
@@ -51,27 +54,50 @@ export class Application {
         this.gameAudio.loop = true;
     }
 
-    public start = () => {
+    public start = (resume = false) => {
+        this.paused = false;
         this.gameAudio.play();
         this.attachEventHanlders();
         this.pixiApp.ticker.add(this.tickerHandler);
-        this.bugHandler.start();
+        this.bugHandler.start(resume);
         this.fireEvent('datachanged');
+
+        if (!resume) {
+            this.actorStat = produce(Application.DEFAULT_STAT, draft => draft);
+            this.actor.clearMortars()
+        } 
+
+        this.fireEvent('restart')
+
     }
 
     public restart = () => {
-        this.actorStat = produce(this.actorStat, draft => draft)
+        this.actorStat = produce(this.actorStat, draft => draft);
+        this.fireEvent('restart')
+    }
+
+    private gameOver = () => {
+        this.pause();
+        this.playAudio(gameOverSound);
+        this.fireEvent('over')
     }
 
     public pause = () => {
         this.paused = true;
         this.bugHandler.pause();
         this.removeEventListeners();
+        this.pixiApp.ticker.remove(this.tickerHandler);
         this.gameAudio.pause();
+        this.fireEvent('pause')
     }
 
-    public static resume = () => {
+    public resume = () => {
+        if (this.actorStat.life <= 0) {
+            return;
+        } 
 
+        this.start(true);
+        this.fireEvent('resume');
     }
 
     public removeUserMortar = () => {
@@ -152,7 +178,7 @@ export class Application {
             return;
         }
         this.actor.tickHandler()
-        this.bugHandler.tickHandler()
+        this.bugHandler.tickHandler(this.speed)
         this.detectCollision();
     }
 
@@ -196,10 +222,19 @@ export class Application {
     }
 
     private addLife = (life: number) => {
+
+        let newLife = this.actorStat.life + life;
+            newLife = newLife < 0 ? 0 : newLife;
+
+
         this.actorStat = produce(this.actorStat, (draft) => {
-            draft.life += life
+            draft.life = newLife;
             return draft;
         })
+
+        if (newLife === 0) {
+            this.gameOver()
+        }
 
         this.fireEvent('datachanged');
     }
@@ -226,16 +261,18 @@ export class Application {
         })
     }
 
-    public reset = () => {
-
-    }
-
     private getListenerId = () :string => {
         const id = uuid();
         if (this.statListener.has(id)) {
             return this.getListenerId()
         }
         return id;
+    }
+
+    private playAudio = (src: string, volume = 1) => {
+        const audio = new Audio(src);
+        audio.volume = volume;
+        audio.play();
     }
 
 }

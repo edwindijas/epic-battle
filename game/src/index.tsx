@@ -7,7 +7,9 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-window.app = new Application();
+
+const app = new Application()
+window.app = app;
 const waitTime = process.env.NODE_ENV === 'production' ? 6000 : 0;
 
 window.setTimeout(() => {
@@ -18,7 +20,9 @@ window.setTimeout(() => {
   );
 }, waitTime)
 
-
+window.addEventListener('blur', () => {
+  app.pause();
+})
 
 
 // If you want to start measuring performance in your app, pass a function
