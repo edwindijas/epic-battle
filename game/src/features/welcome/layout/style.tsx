@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     transition: right 1s;
-    
+    z-index: 10;
     ${({theme}) => `
         color: ${theme?.colors?.background};
     `}

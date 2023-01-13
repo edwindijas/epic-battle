@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl"
-import * as StyEle from './WelcomeFeatureStyle';
+import * as StyEle from './style';
 
 
 const WelcomeFeatureLayoutTestId = 'feature-welcome-layout',
