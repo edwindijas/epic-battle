@@ -2,7 +2,7 @@ import { Actor } from 'game/models/actor/actor';
 import * as Pixi from 'pixi.js'
 import { ApplicationScene } from 'game/scene/scene';
 import { BugsHandler } from './bugsHandler';
-import { Rectangle } from './types';
+import { AppEventListener, AppEventType, Rectangle } from './types';
 import gameSound from "game/assets/audio/WAV/Music_Loop.wav"
 import {v4 as uuid} from 'uuid'
 import { produce } from "immer"
@@ -28,6 +28,9 @@ export class Application {
     private paused = false;
     private gameAudio: HTMLAudioElement = {} as HTMLAudioElement;
     private statListener = new Map<string, StatListener>;
+    private eventLiseners = new Map<string, AppEventListener>
+
+
     public actorStat = produce(Application.DEFAULT_STAT, draft => draft);
 
     private pixiAppDefaults = {
@@ -52,7 +55,8 @@ export class Application {
         this.gameAudio.play();
         this.attachEventHanlders();
         this.pixiApp.ticker.add(this.tickerHandler);
-        this.bugHandler.start()
+        this.bugHandler.start();
+        this.fireEvent('datachanged');
     }
 
     public restart = () => {
@@ -74,14 +78,14 @@ export class Application {
         this.actorStat = produce(this.actorStat, (draft) => {
             draft.armo -= 1;
         })
-        this.pushStat()
+        this.fireEvent('datachanged')
     }
 
     public addUserMortar = () => {
         this.actorStat = produce(this.actorStat, (draft) => {
             draft.armo += 1;
         })
-        this.pushStat()
+        this.fireEvent('datachanged')
     }
 
     /** TODO: ADD Mortar function remove from actor */
@@ -188,7 +192,7 @@ export class Application {
             return draft;
         })
 
-        this.pushStat();
+        this.fireEvent('datachanged');
     }
 
     private addLife = (life: number) => {
@@ -197,24 +201,29 @@ export class Application {
             return draft;
         })
 
-        this.pushStat();
+        this.fireEvent('datachanged');
     }
 
-    private pushStat = () => {
-        this.statListener.forEach((listener) => {
-            listener(this.actorStat);
-        })
-    }
 
-    public addStatListener: AddStatListener = (statListener: StatListener) => {
+    public addGameEventListener = (appEventListener: AppEventListener) => {
         const id = this.getListenerId();
-        this.statListener.set(id, statListener);
-        this.pushStat();
+        this.eventLiseners.set(id, appEventListener);
         return id;
     }
 
-    public removeStatListener: RemoveStatListener = (id: string) => {
-        this.statListener.delete(id)
+    public removeGameEventListener = (id: string) => {
+        this.eventLiseners.delete(id);
+    }
+
+    private fireEvent = (type: AppEventType) => {
+        this.eventLiseners.forEach((eventListener) => {
+            if (type === 'datachanged' && eventListener.event === 'datachanged') {
+                return eventListener.callback(this.actorStat);
+            } else if (type === eventListener.event && eventListener.event !== 'datachanged') {
+                return eventListener.callback();
+            }
+
+        })
     }
 
     public reset = () => {

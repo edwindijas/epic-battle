@@ -18,13 +18,11 @@ export const GameStat = (props : GameStatProps) => {
 
     useEffect(() => {
         const app = window.app as Application
-        const id =app.addStatListener(setState);
+        const id = app.addGameEventListener({event: 'datachanged', callback: setState});
         return () => {
-            app.removeStatListener(id)
+            app.removeGameEventListener(id)
         }
     }, [setState])
-
-    
 
     return <GameStatLayout 
         stat={stat}

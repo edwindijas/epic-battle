@@ -1,4 +1,6 @@
 import { Bug } from "game/models/bugs/bug"
+import { GameData } from "models/Stat";
+import { type } from "os";
 import { DisplayObject } from "pixi.js"
 
 export interface GameObject {
@@ -13,9 +15,19 @@ export interface Rectangle {
     y: number;
 }
 
-export interface Stat {
-    score: number
+export type bugs  = Map<string, Bug>
+
+export type AppEventType = 'start' | 'pause' | 'resume' | 'over' | 'datachanged'
+
+export interface AppEventGeneral {
+    event: Exclude<AppEventType, 'datachanged'>,
+    callback: () => void
 }
 
-export type bugs  = Map<string, Bug>
+export interface AppEventStatChange {
+    event: 'datachanged',
+    callback: (props: GameData) => void
+}
+
+export type AppEventListener = AppEventGeneral | AppEventStatChange
 
