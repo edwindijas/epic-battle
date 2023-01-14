@@ -20,12 +20,12 @@ export class Application {
         score: 0,
         lifeMax: 100,
         multiplier: 15,
-        armo: 5,
-        armoMax: 5
+        armo: 3,
+        armoMax: 3
     }
 
     private static DEFAULT_SPEED_ADJUST_TIME = 300;
-    private static SPEED_INCREMENT = 0.3;
+    private static SPEED_INCREMENT = 0.2;
     private speedAdjustTime = Application.DEFAULT_SPEED_ADJUST_TIME;
     private  static MAX_SPEED = 4;
     private actor: Actor = {} as Actor;

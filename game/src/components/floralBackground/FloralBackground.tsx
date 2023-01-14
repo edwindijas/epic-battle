@@ -1,6 +1,6 @@
 import { useSquare } from 'hooks/useSquare'
 import * as StyEle from './styles'
-import imgBackground from 'assets/background/floral.svg';
+import imgBackground from 'assets/background/FloralBackground.png';
 import { FloralBackgroundProps } from './types';
 
 export const FloralBackground = ({mousePointer}: FloralBackgroundProps) => {

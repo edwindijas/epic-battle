@@ -19,4 +19,6 @@ export const Wrapper = styled.div`
 export const Img = styled.img`
     position: absolute;
     ${uniPos(-20, [], '%')};
+    width: 140%;
+    height: 140%;
 `

@@ -1,5 +1,5 @@
-import { requestJira } from '@forge/bridge';
-//import { requestJira } from './bridge';
+//import { requestJira } from '@forge/bridge';
+import { requestJira } from './bridge';
 import { User } from './types';
 import GuestUser from "mock/User.json";
 
