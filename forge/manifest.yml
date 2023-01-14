@@ -14,8 +14,6 @@ modules:
 resources:
   - key: main
     path: static/game
-    tunnel:
-        port: 3000
 permissions:
   content:
     scripts:
@@ -30,6 +28,5 @@ permissions:
     - read:group:jira
     - read:user:jira
     - read:avatar:jira
-
 app:
   id: ari:cloud:ecosystem::app/14557bb8-86c3-4e19-9326-8fffa4a69221

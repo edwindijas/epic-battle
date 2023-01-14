@@ -8,15 +8,18 @@ import BombSound from 'game/assets/audio/WAV/Interaction_Hard_Stone.wav';
 import { ApplicationScene } from "game/scene/scene";
 import {v4 as uuid} from 'uuid'
 import { Rectangle } from "game/main/types";
+import produce from "immer";
 
 export class Actor extends BaseObject {
     protected preloadAssets: string[] = [
         BombSound
     ]
-    public static dimensions = {
+    public static DEFAULT_DIMENSION = {
         width: 100,
         height: 100
     }
+
+    private dimensions = produce(Actor.DEFAULT_DIMENSION, draft => draft);
 
     private rotation = 0;
     protected container: Pixi.Container = {} as Pixi.Container;
@@ -24,17 +27,6 @@ export class Actor extends BaseObject {
     protected cannon: Pixi.Container = {} as Pixi.Container;
     protected base: Pixi.Container = {} as Pixi.Container;
     private mortars = new Map<string, Mortar>();
-
-    public static getDimensions (): {width: number, height: number} {
-        const height = 150;
-        const width = 150;
-
-        return {
-            width,
-            height
-        }
-    }
-
 
     /**
      * Set initial coordinates for the mortar
@@ -51,6 +43,15 @@ export class Actor extends BaseObject {
 
     constructor (private app: Application, private pixiApp: Pixi.Application<Pixi.ICanvas>) {
         super()
+
+        const squareLength = app.getSquareLength()
+
+        this.dimensions = produce(Actor.DEFAULT_DIMENSION, (draft) => {
+            draft.width *= ApplicationScene.getScale(squareLength);
+            draft.height *= ApplicationScene.getScale(squareLength);
+            return draft;
+        })
+
         this.setup(pixiApp);
     }
 
@@ -67,36 +68,37 @@ export class Actor extends BaseObject {
     private createBase = () => {
         const container = new Pixi.Container();
         const base = Pixi.Sprite.from(imgBase);
-        container.width = Actor.dimensions.width;
-        container.height = Actor.dimensions.height;
-        base.width = Actor.dimensions.width;
-        base.height = Actor.dimensions.height;
-        container.addChild(base);
+        const { width, height } = this.dimensions;
         this.centerContainer(container);
+
+        base.width = width;
+        base.height = height;
+        container.addChild(base);
         this.base = container;
     }
 
     private createCannon = () => {
         const container = new Pixi.Container();
         const cannon = Pixi.Sprite.from(imgCannon);
-        container.addChild(cannon);
-        container.width = Actor.dimensions.width;
-        container.height = Actor.dimensions.height;
-        cannon.width = Actor.dimensions.width;
-        cannon.height = Actor.dimensions.height;
+        const { width, height } = this.dimensions;
         this.centerContainer(container);
+        cannon.width = width;
+        cannon.height = height;
         this.cannon = container;
+        container.addChild(cannon);
     }
 
     private centerContainer = (container: Pixi.Container) => {
-        const {centerX: x, centerY: y} = ApplicationScene.getCenterPos();
-        container.width = Actor.dimensions.width;
-        container.height = Actor.dimensions.height;
+        const squareLength = this.app.getSquareLength()
+        const {centerX: x, centerY: y} = ApplicationScene.getCenterPos(squareLength);
+        const { width, height } = this.dimensions;
+        container.width = width;
+        container.height = height;
         container.position = {x, y};
         
         container.pivot = {
-            x: Actor.dimensions.width / 2,
-            y: Actor.dimensions.height / 2
+            x: width / 2,
+            y: height / 2
         }
     }
 
@@ -119,7 +121,7 @@ export class Actor extends BaseObject {
         const { clientX, clientY } = e;
         this.playSound(BombSound)
         const id = this.createMortarId();
-        const mortar = new Mortar(id, clientX, clientY);
+        const mortar = new Mortar(this.app, this, id, clientX, clientY);
         this.mortars.set(id, mortar);
         this.mortarContainer.addChild(mortar.getContainer());
         this.app.removeUserMortar();

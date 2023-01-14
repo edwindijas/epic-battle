@@ -1,11 +1,12 @@
 import { BaseObject } from "game/library/base";
-import { Actor as Cannon } from "game/models/actor/actor";
+import { Actor, Actor as Cannon } from "game/models/actor/actor";
 import * as Pixi from "pixi.js";
 import { ApplicationScene } from "game/scene/scene";
 import { Application } from "game/main/application";
 import BombPic from './assets/Bomb.png';
 import BounceSound from 'game/assets/audio/WAV/Interaction_Soft_Stone_02.wav';
 import { Rectangle } from 'game/main/types'
+import produce from "immer";
 export class Mortar extends BaseObject {
     private container: Pixi.Container = {} as Pixi.Container;
     private score = 2;
@@ -14,10 +15,12 @@ export class Mortar extends BaseObject {
         y: 0
     }
 
-    private dimensions = {
+    private static DEAFULT_DIMENSIONS = {
         width: 15,
         height: 15
     }
+
+    private dimensions = produce(Mortar.DEAFULT_DIMENSIONS, draft => draft);
 
     private motion = {
         x: 30,
@@ -35,8 +38,19 @@ export class Mortar extends BaseObject {
      * @param {number} mouseX mouse position x
      * @param {number} mouseY mouse position y
      */
-    constructor (private id: string, mouseX: number, mouseY: number) {
+    constructor (private app: Application, private actor: Actor, private id: string, mouseX: number, mouseY: number) {
         super();
+
+        this.dimensions = produce(Mortar.DEAFULT_DIMENSIONS, (draft) => {
+            const squareLength = app.getSquareLength()
+            const ratio = ApplicationScene.getScale(squareLength);
+
+            draft.width *= ratio;
+            draft.height *= ratio;
+
+            return draft;
+        })
+
         this.render();
         this.setInitialCoordinates(mouseX, mouseY);
         this.setInitialSpeed(mouseX, mouseY)
@@ -51,10 +65,10 @@ export class Mortar extends BaseObject {
      * @param {number} mouseY mouse position y
      */
     private setInitialCoordinates = (mouseX: number, mouseY: number) => {
-
-        const {centerX, centerY} = ApplicationScene.getCenterPos()
-        const angle = Cannon.getAngle(mouseX, mouseY);
-        const cannonDimensions = Cannon.getDimensions();
+        const squareLength = this.app.getSquareLength()
+        const {centerX, centerY} = ApplicationScene.getCenterPos(squareLength)
+         const angle = Cannon.getAngle(mouseX, mouseY);
+        const cannonDimensions =  this.actor.getRectangle() //Cannon.getDimensions();
         
         const distX = Math.sin(angle) * cannonDimensions.width / 2;
         const distY = Math.cos(angle) * -cannonDimensions.height / 2;
@@ -66,11 +80,11 @@ export class Mortar extends BaseObject {
     }
 
     private setInitialSpeed = (mouseX: number, mouseY: number) => {
-
-        const {centerX, centerY} = ApplicationScene.getCenterPos();
-        const {adjustX, adjustY} = ApplicationScene.getAdjustMousePos(mouseX, mouseY);
+        const squareLength = this.app.getSquareLength()
+        const {centerX, centerY} = ApplicationScene.getCenterPos(squareLength);
+        const {adjustX, adjustY} = ApplicationScene.getAdjustMousePos(squareLength, mouseX, mouseY);
+        
         const {x, y} = this.position;
-
         const distX = Math.abs(centerX - x);
         const distY = Math.abs(centerY - y);
         const sum = distX + distY;
@@ -159,7 +173,8 @@ export class Mortar extends BaseObject {
     }
 
     private getBoundaries (): {left: number, right: number, top: number, bottom: number} {
-        let  {left, right, top, bottom} = ApplicationScene.getBoundaries();
+        const squareLength = this.app.getSquareLength()
+        let  {left, right, top, bottom} = ApplicationScene.getBoundaries(squareLength);
 
         const leftP = this.dimensions.width / 2;
         const topP = this.dimensions.height / 2;
@@ -174,18 +189,7 @@ export class Mortar extends BaseObject {
 
 
     protected handleWindowResize = () => {
-        const { width: oWidth, height: oHeight } = this.__screenDimensions;
-        const { width, height } = ApplicationScene.getWindowDimensions();
-
-        let { x, y } = this.container.position;
-        x -=  oWidth - width;
-        y -= oHeight - height;
-
-        this.container.position = {
-            x, y
-        }
-
-        this.__screenDimensions = {width, height}
+        
     }
 
     public getId = () => {

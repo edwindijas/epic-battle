@@ -38,7 +38,7 @@ export class BugsHandler {
     private addBug () {
         const id = this.createBugId();
         const points = this.getPoint(); 
-        const bug = new Bug(this, id, points );
+        const bug = new Bug(app, this, id, points );
         this.bugs.set(id, bug);
 
         this.container.addChild(bug.getContainer())
@@ -66,7 +66,8 @@ export class BugsHandler {
     }
 
     private getPoint = () => {
-        const {top, left, bottom, right} = ApplicationScene.getBoundaries();
+        const squareLength = this.app.getSquareLength()
+        const {top, left, bottom, right} = ApplicationScene.getBoundaries(squareLength);
         const boundTo = [top, left, right, bottom];
         const from = Math.floor(Math.random() * 4);
 

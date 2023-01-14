@@ -33,6 +33,7 @@ export class Application {
     private statListener = new Map<string, StatListener>;
     private eventLiseners = new Map<string, AppEventListener>;
     private speed = 1;
+    private squareLength = 0;
 
 
     public actorStat = produce(Application.DEFAULT_STAT, draft => draft);
@@ -45,6 +46,14 @@ export class Application {
     }
 
     constructor () {
+
+        this.squareLength = ApplicationScene.getSquareLength();
+
+        this.pixiAppDefaults = produce(this.pixiAppDefaults, (draft) => {
+            draft.width = this.squareLength;
+            draft.height = this.squareLength;
+        })
+
         this.pixiApp = new Pixi.Application(this.pixiAppDefaults);
         this.scene = new ApplicationScene(this, this.pixiApp);
         this.bugHandler = new BugsHandler(this, this.pixiApp, this.scene);
@@ -235,7 +244,7 @@ export class Application {
         })
 
         if (newLife === 0) {
-            this.gameOver()
+            //this.gameOver()
         }
 
         this.fireEvent('datachanged');
@@ -275,6 +284,10 @@ export class Application {
         const audio = new Audio(src);
         audio.volume = volume;
         audio.play();
+    }
+
+    public getSquareLength = () => {
+        return this.squareLength;
     }
 
 }

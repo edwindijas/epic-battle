@@ -6,6 +6,7 @@ import * as Pixi from 'pixi.js'
 import { ApplicationScene } from "game/scene/scene";
 import { Rectangle } from "game/main/types";
 import { BugsHandler } from "game/main/bugsHandler";
+import produce from "immer";
 
 export class Bug extends BaseObject {
     private spritesSrc = [
@@ -15,10 +16,12 @@ export class Bug extends BaseObject {
 
     private animationSpeed = 1/10;
 
-    private dimensions = {
+    private static DEAFAULT_DIMENSIONS = {
         width: 50,
         height: 50
     }
+
+    private dimensions = produce(Bug.DEAFAULT_DIMENSIONS, draft => draft)
 
     private motion = {
         x: 1,
@@ -28,12 +31,18 @@ export class Bug extends BaseObject {
     private container:Pixi.Container =  {} as Pixi.Container;
     private bug: Pixi.AnimatedSprite = {} as Pixi.AnimatedSprite;
 
-    constructor (private bugsHandler: BugsHandler,
+    constructor (private app: Application, private bugsHandler: BugsHandler,
         private id: string, 
         private position: Pixi.IPointData
         
         ) {
         super();
+        this.dimensions = produce(Bug.DEAFAULT_DIMENSIONS, (draft) => {
+            const ratio = ApplicationScene.getScale(app.getSquareLength());
+            draft.width *= ratio;
+            draft.height *= ratio;
+            return draft;
+        })
         this.render(position);
         this.setInitialSpeed();
     }
@@ -53,7 +62,8 @@ export class Bug extends BaseObject {
     }
 
     private setInitialSpeed = () => {
-        const {centerX, centerY} = ApplicationScene.getCenterPos();
+        const squareLength = this.app.getSquareLength();
+        const {centerX, centerY} = ApplicationScene.getCenterPos(squareLength);
         const {x, y} = this.position;
 
         const distX = Math.abs(centerX - x);
@@ -92,7 +102,8 @@ export class Bug extends BaseObject {
     }
 
     private getAngle = (mouseX: number, mouseY: number): number => {
-        const {centerY, centerX} = ApplicationScene.getCenterPos();
+        const squareLength = this.app.getSquareLength()
+        const {centerY, centerX} = ApplicationScene.getCenterPos(squareLength);
         return Math.atan2(centerY - mouseY, centerX - mouseX) + Math.PI * 0.5
     }
 
