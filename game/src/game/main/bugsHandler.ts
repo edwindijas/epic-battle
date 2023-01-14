@@ -36,7 +36,6 @@ export class BugsHandler {
     }
 
     private addBug () {
-        console.log('adding bug')
         const id = this.createBugId();
         const points = this.getPoint(); 
         const bug = new Bug(this, id, points );

@@ -12,12 +12,12 @@ export const useSquare = () => {
         length -= Margin;
         setLength(length);
 
-    }, []);
+    }, [setLength]);
 
     useEffect(() => {
         const lengthCalculator = calculateLength;
         window.addEventListener('resize', lengthCalculator)
-
+        calculateLength();
         return () => {
             window.removeEventListener('resize', lengthCalculator)
         }

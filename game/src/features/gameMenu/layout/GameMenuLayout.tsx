@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import * as StyEle from './style'
 import { GameMenuLayoutProps } from './types'
 
-const messageId = 'app.feature.gamemenu'
+const messageId = 'app.feature.gamemenu.'
 
 export const GameMenuLayout = ({funFact, gameOver}: GameMenuLayoutProps) => {
 
@@ -15,7 +15,7 @@ export const GameMenuLayout = ({funFact, gameOver}: GameMenuLayoutProps) => {
         app.start();
     }
 
-
+    const titleMessageId = gameOver ? 'over' : 'paused';
 
     return <StyEle.Wrapper >
         <StyEle.Menu >
@@ -24,7 +24,7 @@ export const GameMenuLayout = ({funFact, gameOver}: GameMenuLayoutProps) => {
             </StyEle.BtnClose>
             <StyEle.Title >
                 <FormattedMessage
-                    id={messageId + '.title.paused'}
+                    id={messageId + 'title.' + titleMessageId}
                     defaultMessage='Game Paused'
                 />
             </StyEle.Title>

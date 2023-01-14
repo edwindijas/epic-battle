@@ -31,11 +31,19 @@ export const UserProfilePicture = styled.figure`
     `}
 `
 
+export const Avatar = styled.img`
+     width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    border: 0;
+`
+
 export const UserGreet = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 0 1.5em;
+    padding: 0 1.5em 0 0.75em;
     max-width: 10em;
     position: relative;
     span{
@@ -45,6 +53,10 @@ export const UserGreet = styled.div`
             font-size: 1.5em;
             font-weight: 800;
             margin-top: 0.15em;
+            white-space: nowrap;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 

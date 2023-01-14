@@ -4,9 +4,12 @@ import { Application } from 'game/main/application';
 
 export class ApplicationScene extends BaseObject {
     private container: Pixi.Container = {} as Pixi.Container;
+    private static width = window.innerWidth;
+    private static height = window.innerHeight;
+
     public static borderWidth = 0;
     public static marginTop = 100;
-    public static Margin = 20;
+    public static Margin = 0;
 
     protected screenDimensions = {
         width: 0,
@@ -14,12 +17,12 @@ export class ApplicationScene extends BaseObject {
     }
 
     public static getSquareLength = () => {
-        const width = window.innerWidth,
-            height = window.innerHeight;
+        const width = ApplicationScene.width,
+            height = ApplicationScene.height;
 
         let length = width < height ? width : height;
             length = length > 820 ? 820 : length;
-            return length -= ApplicationScene.Margin;
+            return length;
 
     }
 
@@ -106,11 +109,7 @@ export class ApplicationScene extends BaseObject {
         
     }
 
-    protected handleWindowResize = () => {
-        if (!this.pixiApp.stage) {  return; }
-        this.pixiApp.stage.removeChild(this.container);
-        this.container.destroy();
-        this.render()
+    protected handleWindowResize = () => {   
     }
 
 } 

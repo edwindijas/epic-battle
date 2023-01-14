@@ -54,7 +54,7 @@ export const Game = () => {
       <FloralBackground mousePointer={mousePointer} />
       <GameStat />
       <GameMenu />
-      <StyEle.Wrapper  >
+      <StyEle.Wrapper grid  >
         <StyEle.CanvasWrapper length={length} ref={ref} />
       </StyEle.Wrapper>
     </>

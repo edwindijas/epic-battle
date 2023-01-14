@@ -5,30 +5,12 @@ import { BackgroundFlex } from '../assets/BackgroundFlex';
 import { PageLeadersBoardUser } from '../components/UserStat/UserStat';
 import * as StyEle from './styles'
 import { PageLeaderBoardLayoutProps } from './types';
+import mockUser from "mock/User.json"
 
 const testid = 'page-leader-board-layout',
     messageId = 'app.page.leaderboard',
     users: User[] = [
-        {
-            firstname: 'Edwin',
-            lastname: 'Chiwona',
-            highscore: 9308260
-        },
-        {
-            firstname: 'Micheal',
-            lastname: 'Chanza',
-            highscore: 9308260
-        },
-        {
-            firstname: 'Magret',
-            lastname: 'Chulu',
-            highscore: 9308260
-        },
-        {
-            firstname: 'Edith',
-            lastname: 'Jalo',
-            highscore: 9308260
-        }
+         mockUser
     ]
 
 export const PageLeaderBoardLayout = ({handleBack}: PageLeaderBoardLayoutProps) => {

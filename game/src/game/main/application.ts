@@ -10,6 +10,7 @@ import {v4 as uuid} from 'uuid'
 import { produce } from "immer"
 
 import { GameData, StatListener } from 'models/Stat';
+import { saveScore } from 'models/score';
 
 Pixi.settings.RESOLUTION = window.devicePixelRatio;
 
@@ -39,8 +40,8 @@ export class Application {
     private pixiAppDefaults = {
         background: 'transparent',
         backgroundAlpha: 0,
-        width: 800,
-        height: 800
+        width: ApplicationScene.getSquareLength(),
+        height: ApplicationScene.getSquareLength()
     }
 
     constructor () {
@@ -79,7 +80,8 @@ export class Application {
     private gameOver = () => {
         this.pause();
         this.playAudio(gameOverSound);
-        this.fireEvent('over')
+        this.fireEvent('over');
+        saveScore(this.actorStat.score);
     }
 
     public pause = () => {

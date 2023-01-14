@@ -1,5 +1,14 @@
 {
-    "firstname": "edwin",
-    "lastname": "chiwona",
-    "highscore": 90000000
+    "self": "_bank",
+    "accountId": "blank",
+    "emailAddress": "example@gmail.com",
+    "avatarUrls": {
+        "48x48": "/assets/avatar/user.svg",
+        "24x24": "/assets/avatar/user.svg",
+        "16x16": "/assets/avatar/user.svg",
+        "32x32": "/assets/avatar/user.svg"
+    },
+    "displayName": "Hey guest",
+    "active": true,
+    "mock": true
 }

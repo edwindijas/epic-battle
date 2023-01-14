@@ -5,7 +5,7 @@ export const Wrapper = styled.figure`
     width: 4em;
     height: 4em;
     background-color: #fff;
-    top: 0em;
+    top: 1em;
     left: 0em;
     border-radius: 50%;
     fill: #fff;

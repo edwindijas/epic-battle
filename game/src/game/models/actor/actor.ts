@@ -146,8 +146,8 @@ export class Actor extends BaseObject {
     }
 
     protected handleWindowResize = () => {
-        this.centerContainer(this.container);
-        this.centerContainer(this.cannon);
+        //this.centerContainer(this.container);
+        //this.centerContainer(this.cannon);
     }
 
     public getMortars = () => {
