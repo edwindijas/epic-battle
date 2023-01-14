@@ -1,5 +1,5 @@
-//import { invoke } from "@forge/bridge";
-import { invoke } from "./bridge";
+import { invoke } from "@forge/bridge";
+//import { invoke } from "./bridge";
 
 
 const saveFunc = 'saveHighscore'

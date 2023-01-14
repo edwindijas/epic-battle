@@ -19,11 +19,15 @@ export class Application {
         life: 100,
         score: 0,
         lifeMax: 100,
-        multiplier: 1,
-        armo: 10,
-        armoMax: 10
+        multiplier: 15,
+        armo: 5,
+        armoMax: 5
     }
 
+    private static DEFAULT_SPEED_ADJUST_TIME = 300;
+    private static SPEED_INCREMENT = 0.3;
+    private speedAdjustTime = Application.DEFAULT_SPEED_ADJUST_TIME;
+    private  static MAX_SPEED = 4;
     private actor: Actor = {} as Actor;
     private pixiApp: Pixi.Application = {} as Pixi.Application;
     private scene: ApplicationScene = {} as ApplicationScene;
@@ -32,7 +36,8 @@ export class Application {
     private gameAudio: HTMLAudioElement = {} as HTMLAudioElement;
     private statListener = new Map<string, StatListener>;
     private eventLiseners = new Map<string, AppEventListener>;
-    private speed = 1;
+    private static DEFAULT_SPEED = 1;
+    private speed = Application.DEFAULT_SPEED;
     private squareLength = 0;
 
 
@@ -67,6 +72,7 @@ export class Application {
     public start = (resume = false) => {
         this.paused = false;
         this.gameAudio.play();
+        this.gameAudio.playbackRate = 1 + (this.speed / 4);
         this.attachEventHanlders();
         this.pixiApp.ticker.add(this.tickerHandler);
         this.bugHandler.start(resume);
@@ -75,6 +81,7 @@ export class Application {
         if (!resume) {
             this.actorStat = produce(Application.DEFAULT_STAT, draft => draft);
             this.actor.clearMortars()
+            this.speed = Application.DEFAULT_SPEED;
         } 
 
         this.fireEvent('restart')
@@ -188,6 +195,7 @@ export class Application {
         if (this.paused) {
             return;
         }
+        this.changeSpeed();
         this.actor.tickHandler()
         this.bugHandler.tickHandler(this.speed)
         this.detectCollision();
@@ -204,7 +212,7 @@ export class Application {
                 if (this.rectanglesColliding(mortarRect, bugRect)) {
                     this.bugHandler.removeBug(bug.getId());
                     this.actor.removeMortar(mortar.getId())
-                    this.addScore(1);
+                    this.addScore(mortar.getScore());
                     this.addUserMortar();
                 }
             })
@@ -225,7 +233,7 @@ export class Application {
     private addScore = (score: number) => {
 
         this.actorStat = produce(this.actorStat, (draft) => {
-            draft.score += score
+            draft.score += Math.floor(score * this.speed)
             return draft;
         })
 
@@ -244,7 +252,7 @@ export class Application {
         })
 
         if (newLife === 0) {
-            //this.gameOver()
+            this.gameOver()
         }
 
         this.fireEvent('datachanged');
@@ -280,6 +288,20 @@ export class Application {
         return id;
     }
 
+    private changeSpeed = () => {
+        if (this.speed > Application.MAX_SPEED) {
+            return;
+        }
+        if (this.speedAdjustTime <= 0) {
+            this.speed += Application.SPEED_INCREMENT;
+            this.bugHandler.changeSpeed(this.speed);
+            this.gameAudio.playbackRate = 1 + (this.speed / 4)
+            this.speedAdjustTime = Application.DEFAULT_SPEED_ADJUST_TIME * this.speed;
+        } else {
+            this.speedAdjustTime -= 1;
+        }
+    }
+
     private playAudio = (src: string, volume = 1) => {
         const audio = new Audio(src);
         audio.volume = volume;
@@ -288,6 +310,10 @@ export class Application {
 
     public getSquareLength = () => {
         return this.squareLength;
+    }
+
+    public getSpeed = () => {
+        return this.speed;
     }
 
 }

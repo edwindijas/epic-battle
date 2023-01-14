@@ -43,6 +43,7 @@ export class Bug extends BaseObject {
             draft.height *= ratio;
             return draft;
         })
+        
         this.render(position);
         this.setInitialSpeed();
     }
@@ -90,7 +91,7 @@ export class Bug extends BaseObject {
         bug.width = this.dimensions.width;
         bug.height = this.dimensions.height;
         bug.play();
-        bug.animationSpeed = this.animationSpeed;
+        bug.animationSpeed = this.animationSpeed * this.app.getSpeed()
         this.container.addChild(bug)
         this.bug = bug;
 

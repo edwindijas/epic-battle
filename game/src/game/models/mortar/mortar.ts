@@ -9,7 +9,7 @@ import { Rectangle } from 'game/main/types'
 import produce from "immer";
 export class Mortar extends BaseObject {
     private container: Pixi.Container = {} as Pixi.Container;
-    private score = 2;
+    private score = 1;
     private position = {
         x: 0,
         y: 0
@@ -22,10 +22,12 @@ export class Mortar extends BaseObject {
 
     private dimensions = produce(Mortar.DEAFULT_DIMENSIONS, draft => draft);
 
-    private motion = {
+    public static DEFAULT_MOTION = {
         x: 30,
         y: 30
     }
+
+    private motion = produce(Mortar.DEFAULT_MOTION, draft => draft)
 
     private forceAdd = {
         x: 0,
@@ -50,6 +52,12 @@ export class Mortar extends BaseObject {
 
             return draft;
         })
+
+        this.motion = produce(Mortar.DEFAULT_MOTION, (draft) => {
+            draft.x *=  1 + (app.getSpeed() / 2);
+            draft.y *= 1 + (app.getSpeed() / 2);
+            return draft;
+        });
 
         this.render();
         this.setInitialCoordinates(mouseX, mouseY);
@@ -92,8 +100,11 @@ export class Mortar extends BaseObject {
         const speedX = distX / sum * (adjustX > centerX ? 1 : -1);
         const speedY = distY / sum * (adjustY > centerY ? 1 : -1)
 
-        this.motion.x *= speedX;
-        this.motion.y *= speedY;
+        this.motion = produce(this.motion, (draft) => {
+            draft.x *= speedX;
+            draft.y *= speedY;
+            return draft;
+        })
         
     }
 
@@ -116,7 +127,12 @@ export class Mortar extends BaseObject {
             const balance = y - target;
             y = target;
             this.forceAdd.y -= balance;
-            this.motion.y *= -1;
+            this.score += 1;
+            this.motion = produce(this.motion, draft => {
+                draft.y *= -1;
+                return draft;
+            })
+
             playSound = true;
         }
 
@@ -125,7 +141,11 @@ export class Mortar extends BaseObject {
             const balance = x - target;
             x = target;
             this.forceAdd.x -= balance;
-            this.motion.x *= -1;
+            this.score += 1;
+            this.motion = produce(this.motion, draft => {
+                draft.x *= -1;
+                return draft;
+            })
             playSound = true;
         }
 
@@ -152,9 +172,7 @@ export class Mortar extends BaseObject {
     }
 
     private render () {
-
         const {width, height} = this.dimensions;
-
         const container = new Pixi.Container();
         container.width = width;
         container.height = height;

@@ -7,9 +7,10 @@ import { ApplicationScene } from "game/scene/scene";
 import soundBugDestroyed from "game/assets/audio/WAV/Action_Obtain_Point_04.wav"
 
 export class BugsHandler {
+    private static DEFAULT_ADD_FREQUENCY = 10;
     private addTimeDefault = 1000;
     private addTime = 1000;
-    private addFreq = 10;
+    private addFreq = BugsHandler.DEFAULT_ADD_FREQUENCY;
     private interval: number | undefined;
     private container: Pixi.Container = {} as Pixi.Container;
     private bugs: bugs = new Map<string, Bug>();
@@ -17,6 +18,7 @@ export class BugsHandler {
     
 
     constructor (private app: Application, private pixiApp: Pixi.Application, private scene: ApplicationScene) {
+        this.addTime *= app.getSpeed()
         this.container = new Pixi.Container();
         pixiApp.stage.addChild(this.container);
         
@@ -125,6 +127,10 @@ export class BugsHandler {
     private playSound = (src: string) => {
         const audio = new Audio(src);
         audio.play();
+    }
+
+    public changeSpeed = (speed: number) => {
+        this.addTime *= speed;
     }
 
 }

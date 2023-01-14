@@ -4,7 +4,7 @@ import imgBase from "game/assets/models/actor/base.png"
 import { BaseObject } from "game/library/base";
 import { Application } from "game/main/application";
 import { Mortar } from "game/models/mortar/mortar";
-import BombSound from 'game/assets/audio/WAV/Interaction_Hard_Stone.wav';
+import BombSound from 'game/assets/audio/WAV/Spell_Explosion.wav';
 import { ApplicationScene } from "game/scene/scene";
 import {v4 as uuid} from 'uuid'
 import { Rectangle } from "game/main/types";
@@ -119,7 +119,10 @@ export class Actor extends BaseObject {
             return;
         }
         const { clientX, clientY } = e;
-        this.playSound(BombSound)
+
+        const playbackRate = 1.5 + (this.app.getSpeed() / 2)
+
+        this.playSound(BombSound, 1, playbackRate)
         const id = this.createMortarId();
         const mortar = new Mortar(this.app, this, id, clientX, clientY);
         this.mortars.set(id, mortar);
