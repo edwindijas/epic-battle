@@ -12,7 +12,6 @@ import { produce } from "immer"
 import { GameData, StatListener } from 'models/Stat';
 import { saveScore } from 'models/score';
 
-Pixi.settings.RESOLUTION = window.devicePixelRatio;
 
 export class Application {
     private static DEFAULT_STAT: GameData = {
@@ -24,8 +23,8 @@ export class Application {
         armoMax: 3
     }
 
-    private static DEFAULT_SPEED_ADJUST_TIME = 300;
-    private static SPEED_INCREMENT = 0.2;
+    private static DEFAULT_SPEED_ADJUST_TIME = 700;
+    private static SPEED_INCREMENT = 0.1;
     private speedAdjustTime = Application.DEFAULT_SPEED_ADJUST_TIME;
     private  static MAX_SPEED = 4;
     private actor: Actor = {} as Actor;
@@ -40,9 +39,7 @@ export class Application {
     private speed = Application.DEFAULT_SPEED;
     private squareLength = 0;
 
-
     public actorStat = produce(Application.DEFAULT_STAT, draft => draft);
-
     private pixiAppDefaults = {
         background: 'transparent',
         backgroundAlpha: 0,
@@ -132,20 +129,13 @@ export class Application {
         this.fireEvent('datachanged')
     }
 
-    /** TODO: ADD Mortar function remove from actor */
-    public fireMortar = () => {
-
-    }
-
     private rectanglesColliding (rect1: Rectangle, rect2: Rectangle) {
         if (rect1.x + rect1.width < rect2.x || rect1.x > rect2.x + rect2.width) {
             return false;
         }
-        
         if (rect1.y + rect1.height < rect2.y || rect1.y > rect2.y + rect2.height) {
             return false;
         }
-    
         return true;
     }
 
@@ -227,13 +217,11 @@ export class Application {
                 this.addLife(-20);
             }
         })
-
     }
 
     private addScore = (score: number) => {
-
         this.actorStat = produce(this.actorStat, (draft) => {
-            draft.score += Math.floor(score * this.speed)
+            draft.score += Math.floor(score * this.speed * this.actorStat.multiplier)
             return draft;
         })
 
@@ -254,7 +242,6 @@ export class Application {
         if (newLife === 0) {
             this.gameOver()
         }
-
         this.fireEvent('datachanged');
     }
 

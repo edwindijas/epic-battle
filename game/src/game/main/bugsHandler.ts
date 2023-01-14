@@ -28,6 +28,10 @@ export class BugsHandler {
         if (!resume) {
             this.removeAllbugs();
             this.addBug();
+        } else {
+            this.bugs.forEach(bug => {
+                bug.resume();
+            })
         }
     }
 
