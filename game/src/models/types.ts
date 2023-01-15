@@ -10,5 +10,6 @@ export interface User {
     "displayName": string,
     "active": boolean,
     "mock"?: boolean,
-    "highscore"?: number
+    "highscore"?: number,
+    "jiraBoost"?: number
 }

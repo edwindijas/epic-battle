@@ -72,3 +72,5 @@ global.testRenderWithoutRouter = (children: ReactNode) => {
     { children }
   </AllTheProviders>)
 }
+
+global.dummyFunction = () => {}

@@ -25,6 +25,55 @@ export const Title = styled.h1`
     font-weight: 800;
 `
 
+export const AboutBoost = styled.div`
+    display: flex;
+    padding: 1em 0;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    max-width: 22em;
+    position: relative;
+    color: #5a784a;
+`
+
+export const AboutBoostPar = styled.p`
+    margin: 0 1.5em 0 0.5em;
+    font-size: 1.4em;
+`
+
+export const AboutBoostFig = styled.span`
+    display: inline-block;
+    margin-left: 0em;
+    font-weight: 900;
+`
+
+export const BoostIcon = styled.figure`
+    width: 2em;
+    height: 2em;
+    padding: 0.5em;
+    fill: #5a784a;
+`
+
+export const HelpIcon = styled.button`
+    border: 1px solid #1b6933;
+    border-radius: 50%;
+    background-color: #4b4bd1;
+    display: flex;
+    padding: 0;
+    font-size: 1.3em;
+    width: 1.5em;
+    height: 1.5em;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #fff;
+    position: absolute;
+    right: 1em;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+`
+
 export const IcoEpic = styled.figure`
     fill: #fff;
     height: 8em;

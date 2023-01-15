@@ -7,7 +7,7 @@ const { getByTestId } = screen,
 
 
 beforeEach(() => {
-    testRender(<LandingLayout />)
+    testRender(<LandingLayout openAbout={dummyFunction} />)
 })
 
 describe('Layout renders', () => {
