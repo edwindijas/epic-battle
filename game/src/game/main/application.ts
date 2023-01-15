@@ -15,16 +15,8 @@ import { MouseEvent as ReactMouseEvent } from 'react';
 
 
 export class Application {
-    private static DEFAULT_STAT: GameData = {
-        life: 100,
-        score: 0,
-        lifeMax: 100,
-        multiplier: 15,
-        armo: 5,
-        armoMax: 5
-    }
-
-    private static DEFAULT_SPEED_ADJUST_TIME = 1500;
+    
+    private static DEFAULT_SPEED_ADJUST_TIME = 1000;
     private static SPEED_INCREMENT = 0.2;
     private speedAdjustTime = Application.DEFAULT_SPEED_ADJUST_TIME;
     private  static MAX_SPEED = 4;
@@ -39,6 +31,16 @@ export class Application {
     private static DEFAULT_SPEED = 1;
     private speed = Application.DEFAULT_SPEED;
     private squareLength = 0;
+    private boost = 15;
+
+    private static DEFAULT_STAT: GameData = {
+        life: 100,
+        score: 0,
+        lifeMax: 100,
+        boost: 15,
+        armo: 5,
+        armoMax: 5
+    }
 
     public actorStat = produce(Application.DEFAULT_STAT, draft => draft);
     private pixiAppDefaults = {
@@ -67,21 +69,37 @@ export class Application {
         this.gameAudio.loop = true;
     }
 
-    public start = (resume = false) => {
+    public start = (boostResum: number | boolean = false) => {
+
+        const resume = typeof boostResum === 'boolean' ? boostResum : false;
+
+        if (typeof boostResum === 'number') {
+            this.boost = boostResum;
+            this.actorStat = produce(this.actorStat, (draft) => {
+                draft.boost = boostResum;
+                return draft;
+            })
+
+        }
+
         this.paused = false;
         this.gameAudio.play();
         this.gameAudio.playbackRate = 1 + (this.speed / 4);
         this.attachEventHanlders();
         this.pixiApp.ticker.add(this.tickerHandler);
         this.bugHandler.start(resume);
-        this.fireEvent('datachanged');
+        
 
         if (!resume) {
-            this.actorStat = produce(Application.DEFAULT_STAT, draft => draft);
+            this.actorStat = produce(Application.DEFAULT_STAT, draft => {
+                draft.boost = this.boost;
+                return draft;
+            });
             this.actor.clearMortars()
             this.speed = Application.DEFAULT_SPEED;
-        } 
+        }
 
+        this.fireEvent('datachanged');
         this.fireEvent('restart')
 
     }
@@ -228,7 +246,7 @@ export class Application {
 
     private addScore = (score: number) => {
         this.actorStat = produce(this.actorStat, (draft) => {
-            draft.score += Math.floor(score * this.speed * this.actorStat.multiplier)
+            draft.score += Math.floor(score * this.actorStat.boost)
             return draft;
         })
 
@@ -289,6 +307,10 @@ export class Application {
         if (this.speedAdjustTime <= 0) {
             this.speed += Application.SPEED_INCREMENT;
             this.bugHandler.changeSpeed(this.speed);
+            this.actorStat = produce(this.actorStat, (draft) => {
+                draft.boost = Math.floor(this.boost * (this.speed));
+                return draft
+            })
             this.gameAudio.playbackRate = 1 + (this.speed / 4)
             this.speedAdjustTime = Application.DEFAULT_SPEED_ADJUST_TIME * this.speed;
         } else {

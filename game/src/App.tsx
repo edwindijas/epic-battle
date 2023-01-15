@@ -9,14 +9,15 @@ import { FeatureBackground } from 'features/background/Background';
 import { WithUser } from 'services/User/User';
 import { useSquare } from 'hooks/useSquare';
 import { WithLeaderBoard } from 'services/LeaderBoard/withLeaderBoard';
+import { AppProps } from 'types';
 
-function App() {
+function App({ userData }: AppProps) {
   const square = useSquare();
   const scale = square / 820;
   
   return (
     <WithLeaderBoard >
-      <WithUser >
+      <WithUser userData={userData} >
         <ThemeProvider theme={DefaultTheme} >
           <IntlProvider locale='en' messages={defaultMessages} >
             { <FeatureBackground /> }

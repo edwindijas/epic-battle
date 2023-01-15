@@ -6,18 +6,23 @@ import { IcoBall } from '../assets/IcoBall';
 import { GameScoreLayoutProps } from './types';
 import { IcoLife } from '../assets/IcoLife';
 import { Application } from 'game/main/application';
+import { useUser } from 'hooks/useUser';
 
 export const GameStatLayout = ({stat}: GameScoreLayoutProps) => {
     const app = window.app as Application;
-    const {score, life, lifeMax, armo, armoMax, multiplier} = stat
+    const {score, life, lifeMax, armo, armoMax, boost} = stat
     const length = useSquare();
     const lifePer = life / lifeMax * 100;
     const armoPer = armo / armoMax * 100;
     const ballColor = '#56d68f';
 
+    const { avatarUrls } = useUser();
+
     return <StyEle.Wrapper >
         <StyEle.UserInfo >
-            <StyEle.UserProfile />
+            <StyEle.UserProfile>
+                <StyEle.UserProfileImg src={avatarUrls['48x48']} />
+            </StyEle.UserProfile>
             <StyEle.UserProps>
                 <StyEle.UserLife per={lifePer} >
                     <IcoLife />
@@ -41,7 +46,7 @@ export const GameStatLayout = ({stat}: GameScoreLayoutProps) => {
                 })}
             </StyEle.GameScore>
             <StyEle.GameMultiplier >
-                { multiplier }
+                { boost }
             </StyEle.GameMultiplier>
         </StyEle.GameStatus>
     </StyEle.Wrapper>

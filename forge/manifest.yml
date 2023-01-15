@@ -11,6 +11,8 @@ modules:
   function:
     - key: resolver
       handler: index.handler
+      tunnel:
+        port: 3000
 resources:
   - key: main
     path: static/game

@@ -11,5 +11,6 @@
     "displayName": "Guest User",
     "active": true,
     "mock": true,
-    "highscore": 9000
+    "highscore": 9000,
+    "jiraBoost": 30
 }

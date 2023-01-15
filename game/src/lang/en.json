@@ -23,6 +23,6 @@
     "app.feature.about.howTo_3": "You earn points for each bug they successfully kill.",
     "app.feature.about.howTo_4": "You have a limited number of mortars, they will replenish once a target is hit.",
     "app.feature.about.howTo_5": "Bonus points if your mortar bounces before hiting a bug.",
-    "app.feature.about.howTo_6": "You gain an advantage by completing work in Jira, allowing them to earn bonuses and power-ups.",
+    "app.feature.about.howTo_6": "You gain an advantage by completing work in Jira, Requires use of due date.",
     "app.feature.about.howTo_7": "The game ends when your life is done."
 }

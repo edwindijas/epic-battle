@@ -15,8 +15,10 @@ export const Wrapper = styled.div`
     max-width: 960px;
     display: flex;
     justify-content: space-between;
-   
 `
+
+
+
 export const BtnPause = styled.figure`
     width: 4em;
     height: 4em;
@@ -45,9 +47,15 @@ export const UserInfo = styled.div`
 export const UserProfile = styled.div`
     height: 4em;
     width: 4em;
-    background-color: #091810;
+    background-color: #fff;
     border-radius: 50%;
 `
+
+export const UserProfileImg = styled.img`
+    width: 100%;
+    height: 100%;
+`
+
 
 export const GameStatus = styled.div`
     width: 15em;

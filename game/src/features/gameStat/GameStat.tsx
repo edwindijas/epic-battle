@@ -12,7 +12,7 @@ export const GameStat = (props : GameStatProps) => {
         lifeMax: 0,
         armo: 0,
         armoMax: 0,
-        multiplier: 1
+        boost: 15
     })
 
 

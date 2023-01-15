@@ -5,6 +5,7 @@ import { FloralBackground } from "components/floralBackground/FloralBackground";
 import { FeatureLeaderBoard } from "features/leaderboard/LeaderBoard";
 import { FeatureSettings } from "features/settings/SettingsFeature";
 import { useSquare } from "hooks/useSquare";
+import { useUser } from "hooks/useUser";
 import { MouseEvent, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import * as StyEle from "./styles"
@@ -16,8 +17,7 @@ const LandingLayoutTestId = 'page-landing-layout',
 
 
 export const LandingLayout = ({openAbout}: LandingLayoutProps) => {
-
-    //prevent initial missfire
+    const user = useUser();
     const length = useSquare();
     const [showBoostHelp, setBoostHelp] = useState(false);
 
@@ -57,7 +57,7 @@ export const LandingLayout = ({openAbout}: LandingLayoutProps) => {
             </StyEle.BoostIcon>
             <StyEle.AboutBoostPar >
                 <StyEle.AboutBoostFig > 
-                    15
+                    { user.jiraBoost || 15 }
                 </StyEle.AboutBoostFig>
             </StyEle.AboutBoostPar>
             

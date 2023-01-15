@@ -6,6 +6,7 @@ import { useSquare } from 'hooks/useSquare';
 import { GameStat } from 'features/gameStat/GameStat';
 import { Application } from './main/application';
 import { GameMenu } from 'features/gameMenu/GameMenu';
+import { useUser } from 'hooks/useUser';
 
 const mousePointer = "crosshair";
 
@@ -16,7 +17,8 @@ export const Game = () => {
   const ref = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
   const app = window.app as Application;
-
+  const user = useUser();
+  
   const keyDownHandler = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       if (app.paused) {
@@ -32,7 +34,7 @@ export const Game = () => {
 
     const divRef = ref.current;
     
-    app.start();
+    app.start(user.jiraBoost || 15);
 
     /*@ts-ignore */
     divRef.appendChild(app.getView());

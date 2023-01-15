@@ -1,4 +1,5 @@
 import { Application } from 'game/main/application';
+import { getUser } from 'models/Users';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -12,13 +13,15 @@ const app = new Application()
 window.app = app;
 const waitTime = process.env.NODE_ENV === 'production' ? 6000 : 0;
 
-window.setTimeout(() => {
+
+getUser().then((user) => {
   root.render(
     <React.StrictMode>
-      <App />
+      <App userData={user} />
     </React.StrictMode>
   );
-}, waitTime)
+})
+
 
 window.addEventListener('blur', () => {
   app.pause();

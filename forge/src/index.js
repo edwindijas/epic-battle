@@ -4,12 +4,14 @@ const resolver = new Resolver();
 
 const BASE_URL = '/rest/api/3/'
 const URL_CURRENT_USER = BASE_URL + 'myself'
+const URL_ISSUE_SEARCH = BASE_URL + '/search'
+
+const JQL_RESOLVED_ISSUES = 'assignee=currentUser() AND resolved >= startOfMonth() ORDER BY created DESC';
+const JQL_UNRESOLVED_ISSUES_DUE_MONTH = 'assignee=currentUser() and resolution=Unresolved AND duedate >= startOfMonth() AND duedate <= endOfMonth() ORDER BY created DESC';
 
 const STORAGE_HIGHSCORE = 'game-highscore'
 
-const getCurrentUser = async () => {
-  return await (await api.asUser().requestJira(route`${URL_CURRENT_USER}`)).json();
-}
+
 
 //const getAllUsersWithId = 
 
@@ -19,10 +21,21 @@ resolver.define('status', (req) => {
 });
 
 
+
+resolver.define('getUser', async (req) => {
+  const user = await getCurrentUser();
+  const resolvedCount = await getJQLTotal(JQL_RESOLVED_ISSUES);
+  const unresolvedCount = await getJQLTotal(JQL_UNRESOLVED_ISSUES_DUE_MONTH);
+  const total = resolvedCount + unresolvedCount;
+  const boost = total ? Math.floor((resolvedCount / total) * 30) : 1;
+  user.jiraBoost = boost;
+  return user;
+})
+
+
 resolver.define('getHighscores', async (req) => {
 
   const scores = await storage.query().limit(20).where('key', startsWith(STORAGE_HIGHSCORE)).getMany();
-
   const userId = scores.results.map(score => score.accountId)
 
   return {scores};
@@ -55,4 +68,26 @@ resolver.define('saveHighscore', async({payload}) => {
   }
 })
 
+const getCurrentUser = async () => {
+  return await (await api.asUser().requestJira(route`${URL_CURRENT_USER}`)).json();
+}
+
+const getJQLTotal = async (jql) => {
+  var bodyData = {jql, maxResults: 1};
+  const response = await api.asUser().requestJira(route`${URL_ISSUE_SEARCH}`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyData)
+  });
+
+  const results = await response.json()
+  return results.total;
+}
+
+
 export const handler = resolver.getDefinitions();
+
+
