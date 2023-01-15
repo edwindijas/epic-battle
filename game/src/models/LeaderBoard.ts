@@ -7,7 +7,7 @@ const BASE_URL = '/rest/api/3/'
 
 const URL_CURRENT_USER = BASE_URL + 'myself'
 
-export const getUser = async () => {
+export const getLeaderBoard = async () => {
     return await requestJira(URL_CURRENT_USER).then(
         (response: any) => {
             return response.json() as unknown

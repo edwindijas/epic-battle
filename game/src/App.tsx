@@ -8,22 +8,25 @@ import { DefaultTheme } from 'theme/default';
 import { FeatureBackground } from 'features/background/Background';
 import { WithUser } from 'services/User/User';
 import { useSquare } from 'hooks/useSquare';
+import { WithLeaderBoard } from 'services/LeaderBoard/withLeaderBoard';
 
 function App() {
   const square = useSquare();
   const scale = square / 820;
   
   return (
-    <WithUser >
-      <ThemeProvider theme={DefaultTheme} >
-        <IntlProvider locale='en' messages={defaultMessages} >
-          { <FeatureBackground /> }
-          <StyEle.Wrapper data-testid='main-app' scale={scale} className="App">
-            <Router />
-          </StyEle.Wrapper>
-        </IntlProvider>
-      </ThemeProvider>
-    </WithUser>
+    <WithLeaderBoard >
+      <WithUser >
+        <ThemeProvider theme={DefaultTheme} >
+          <IntlProvider locale='en' messages={defaultMessages} >
+            { <FeatureBackground /> }
+            <StyEle.Wrapper data-testid='main-app' scale={scale} className="App">
+              <Router />
+            </StyEle.Wrapper>
+          </IntlProvider>
+        </ThemeProvider>
+      </WithUser>
+    </WithLeaderBoard>
   );
 }
 
