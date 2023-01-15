@@ -8,7 +8,7 @@
         "16x16": "/assets/avatar/user.svg",
         "32x32": "/assets/avatar/user.svg"
     },
-    "displayName": "Hey guest",
+    "displayName": "Guest User",
     "active": true,
     "mock": true,
     "highscore": 9000

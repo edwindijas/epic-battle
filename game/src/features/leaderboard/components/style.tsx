@@ -18,6 +18,8 @@ export const User = styled.div`
 export const UserRating = styled.p`
     font-size: 1.4em;
     padding: 0;
+    font-family: 'MartianMono', 'Courier New', Courier, monospace;
+    font-weight: 600;
 `
 
 export const UserProfilePicture = styled.figure`
@@ -31,6 +33,11 @@ export const UserProfilePicture = styled.figure`
     margin-left: 1em;
 `
 
+export const UserProfilePictureImg = styled.img`
+    width: 100%;
+    height: 100%;
+`
+
 
 export const Username = styled.p`
     padding: 0 1em;
@@ -41,4 +48,6 @@ export const Username = styled.p`
 export const Points = styled.p`
     font-size: 1.4em;
     font-weight: 800;
+    font-family: 'MartianMono', 'Courier New', Courier, monospace;
+    font-weight: 600;
 `

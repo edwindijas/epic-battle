@@ -1,32 +1,21 @@
+import { User } from 'models/types';
 import { FormattedMessage } from 'react-intl'
 import { Background } from '../assets/Background';
 import { LeaderBoardFeatureUser } from '../components/User';
 import * as StyEle from './styles'
+import { FeatureLeaderBoardLayoutProps } from './types';
 
 const TestId = 'feature-leaderboard-layout',
     messageId = 'app.feature.leaderboard';
 
-const sampleUsers = [
-    {
-        name: 'Edwin Chiwona',
-        highScore: 900,
-        position: 1
-    },
-    {
-        name: 'Wonderful Kunje',
-        highScore: 900,
-        position: 1
-    },
-]
-
-export const FeatureLeaderBoardLayout = () => {
+export const FeatureLeaderBoardLayout = ({users}: FeatureLeaderBoardLayoutProps) => {
     return <StyEle.Wrapper data-testid={TestId} >
             <Background />
             <StyEle.Members data-testid={TestId + '-members'} >
                 {
-                    sampleUsers.map((user) => {
-                        return <StyEle.Member key={user.name} >
-                            <LeaderBoardFeatureUser  {...user}  />
+                    users.slice(0, 2).map((user: User, index) => {
+                        return <StyEle.Member key={user.accountId} >
+                            <LeaderBoardFeatureUser  {...user} position={index + 1}  />
                         </StyEle.Member>
                     })
                 }

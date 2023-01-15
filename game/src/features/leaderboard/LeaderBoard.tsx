@@ -1,5 +1,7 @@
+import { useLeaderBoard } from "hooks/useLeaderBoard"
 import { FeatureLeaderBoardLayout } from "./layout/LeaderBoard"
 
 export const FeatureLeaderBoard = () => {
-    return <FeatureLeaderBoardLayout />
+    const users = useLeaderBoard()
+    return <FeatureLeaderBoardLayout users={users.slice(0, 2)} />
 }

@@ -8,17 +8,19 @@ import mockUser from "mock/User.json"
 import mockData from "mock/user.data.json"
 import { FloralBackground } from 'components/floralBackground/FloralBackground';
 import { useCallback, useState } from 'react';
+import { useLeaderBoard } from 'hooks/useLeaderBoard';
 
 const testid = 'page-leader-board-layout',
-    messageId = 'app.page.leaderboard',
-    users: User[] = mockData;
+    messageId = 'app.page.leaderboard';
 
 export const PageLeaderBoardLayout = ({handleBack}: PageLeaderBoardLayoutProps) => {
     const sliceNum = 4;
     const [currentIndex, setIndex] = useState(0);
 
     const startSlice = currentIndex * sliceNum;
-    const endSlice = startSlice + sliceNum; 
+    const endSlice = startSlice + sliceNum;
+
+    const users = useLeaderBoard();
 
 
     const next = useCallback(() => {

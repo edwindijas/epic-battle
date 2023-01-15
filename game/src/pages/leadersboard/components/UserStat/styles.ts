@@ -15,9 +15,14 @@ export const Container = styled.div`
 export const Profile = styled.div`
     width: 4em;
     height: 4em;
-    background-color: #ccc;
+    background-color: #fff;
     margin: 0 2em 0 1em;
     border-radius: 50%;
+`
+
+export const ProfileImg = styled.img`
+    width: 100%;
+    height: 100%;
 `
 
 export const Score = styled.div`

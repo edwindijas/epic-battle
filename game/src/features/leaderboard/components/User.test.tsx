@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react";
 import {LeaderBoardFeatureUser} from './User'
+import users from "mock/user.data.json"
 
 const TestId = 'feature-leaderboard-component-user',
     { getByTestId } = screen;
@@ -19,7 +20,7 @@ const sampleUsers = [
     
     
 beforeEach(() => {
-    testRender(<LeaderBoardFeatureUser key='123' {...sampleUsers[0]} />)
+    testRender(<LeaderBoardFeatureUser {...users[0]} position={1} />)
 })
 
 describe('Leaderboard Feature Component user render', () => {
