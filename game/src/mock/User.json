@@ -10,5 +10,6 @@
     },
     "displayName": "Hey guest",
     "active": true,
-    "mock": true
+    "mock": true,
+    "highscore": 9000
 }

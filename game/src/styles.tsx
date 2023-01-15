@@ -9,4 +9,8 @@ export const Wrapper = styled.div`
     ${({scale}: {scale: number}) => `
         font-size: ${scale}em;
     `}
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

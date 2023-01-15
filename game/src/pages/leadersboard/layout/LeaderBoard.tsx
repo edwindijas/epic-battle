@@ -1,20 +1,37 @@
 import { IcoBack } from 'assets/svg/IcoBack';
 import { User } from 'models/types';
 import { FormattedMessage } from 'react-intl';
-import { BackgroundFlex } from '../assets/BackgroundFlex';
 import { PageLeadersBoardUser } from '../components/UserStat/UserStat';
 import * as StyEle from './styles'
 import { PageLeaderBoardLayoutProps } from './types';
 import mockUser from "mock/User.json"
+import mockData from "mock/user.data.json"
+import { FloralBackground } from 'components/floralBackground/FloralBackground';
+import { useCallback, useState } from 'react';
 
 const testid = 'page-leader-board-layout',
     messageId = 'app.page.leaderboard',
-    users: User[] = [
-         mockUser
-    ]
+    users: User[] = mockData;
 
 export const PageLeaderBoardLayout = ({handleBack}: PageLeaderBoardLayoutProps) => {
-    return <StyEle.Container data-testid={testid} >
+    const sliceNum = 4;
+    const [currentIndex, setIndex] = useState(0);
+
+    const startSlice = currentIndex * sliceNum;
+    const endSlice = startSlice + sliceNum; 
+
+
+    const next = useCallback(() => {
+        setIndex((index) => index + 1);
+    }, [setIndex])
+
+    const prev = useCallback(() => {
+        setIndex(index => index - 1);
+    }, [setIndex])
+
+    return <>
+        <FloralBackground />
+        <StyEle.Container data-testid={testid} >
        <StyEle.TitleWrapper >
             <StyEle.BackButton data-testid={testid + '-btn-back'} 
                 onClick={handleBack}
@@ -27,25 +44,24 @@ export const PageLeaderBoardLayout = ({handleBack}: PageLeaderBoardLayoutProps) 
                     defaultMessage="leader's board"
                 />
             </StyEle.Title>
-            <StyEle.BackgroundWrapper >
-                <BackgroundFlex />
-            </StyEle.BackgroundWrapper>
        </StyEle.TitleWrapper>
-       <StyEle.Body >
+       <StyEle.List >
         {
-            users.map((user, index) => {
-                return <PageLeadersBoardUser user={user} key={index} index={index + 1} />;
+            users.slice(startSlice, endSlice).map((user, index) => {
+                return <StyEle.ListItem  key={user.accountId}  >
+                    <PageLeadersBoardUser user={user} key={index} index={ startSlice + index + 1} />;
+                </StyEle.ListItem>
             })
         }
-       </StyEle.Body>
+       </StyEle.List>
        <StyEle.BtnContainer >
-            <StyEle.Prevbutton data-testid={testid + '-btn-prev'} >
+            <StyEle.Prevbutton data-testid={testid + '-btn-prev'} onClick={prev} >
                 <FormattedMessage
                     id='app.prev'
                     defaultMessage='previous'
                 />
             </StyEle.Prevbutton>
-            <StyEle.NextButton data-testid={testid + '-btn-next'} >
+            <StyEle.NextButton data-testid={testid + '-btn-next'} onClick={next} >
                 <FormattedMessage
                     id='app.next'
                     defaultMessage='next'
@@ -53,4 +69,5 @@ export const PageLeaderBoardLayout = ({handleBack}: PageLeaderBoardLayoutProps) 
             </StyEle.NextButton>
        </StyEle.BtnContainer>
     </StyEle.Container>
+    </>
 }

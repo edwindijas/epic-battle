@@ -11,6 +11,7 @@ import { produce } from "immer"
 
 import { GameData, StatListener } from 'models/Stat';
 import { saveScore } from 'models/score';
+import { MouseEvent as ReactMouseEvent } from 'react';
 
 
 export class Application {
@@ -106,7 +107,13 @@ export class Application {
         this.fireEvent('pause')
     }
 
-    public resume = () => {
+    public resume = (e?: MouseEvent | ReactMouseEvent) => {
+
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault()
+        }
+
         if (this.actorStat.life <= 0) {
             return;
         } 
