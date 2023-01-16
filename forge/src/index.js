@@ -1,16 +1,14 @@
 import Resolver from '@forge/resolver';
 import api, {route, startsWith, storage} from "@forge/api"
-const resolver = new Resolver();
+import userData from "./user.data.json";
 
+const resolver = new Resolver();
 const BASE_URL = '/rest/api/3/'
 const URL_CURRENT_USER = BASE_URL + 'myself'
 const URL_ISSUE_SEARCH = BASE_URL + '/search'
-
 const JQL_RESOLVED_ISSUES = 'assignee=currentUser() AND resolved >= startOfMonth() ORDER BY created DESC';
 const JQL_UNRESOLVED_ISSUES_DUE_MONTH = 'assignee=currentUser() and resolution=Unresolved AND duedate >= startOfMonth() AND duedate <= endOfMonth() ORDER BY created DESC';
-
 const STORAGE_HIGHSCORE = 'game-highscore'
-
 
 
 //const getAllUsersWithId = 
@@ -33,17 +31,31 @@ resolver.define('getUser', async (req) => {
 })
 
 
-resolver.define('getHighscores', async (req) => {
+resolver.define('getHighscores', async ({payload}) => {
+  const query = storage.query().limit(20).where('key', startsWith(STORAGE_HIGHSCORE));
+  const { cursor } = payload;
+  if (cursor) {
+    query.cursor(cursor);
+  }
 
-  const scores = await storage.query().limit(20).where('key', startsWith(STORAGE_HIGHSCORE)).getMany();
-  const userId = scores.results.map(score => score.accountId)
-
+  const scores =  await query.getMany();
   return {scores};
+})
+
+resolver.define('saveSampleData', async () => {
+  let count = 0;
+  const users = userData.slice(0, 50);
+  for (let x = 0; x < users.length; x++) {
+    const user = users[x];
+    const result = await saveHighscore({ payload: user });
+    count += 1;
+  }
+  return {ok: true, count, users}
 })
 
 resolver.define('saveHighscore', async({payload}) => {
   const { accountId } = await getCurrentUser();
-  const {highscore} = payload;
+  const { highscore } = payload;
 
   const key = STORAGE_HIGHSCORE + `-${accountId}`;
   const userHighScore = await storage.get(key);
@@ -66,6 +78,18 @@ resolver.define('saveHighscore', async({payload}) => {
     ok: true,
     highscore
   }
+});
+
+
+resolver.define('getAllUsers', async ({payload}) => {
+  const startAt = payload.startAt || 0;
+  const results = await api.asUser().requestJira(route`/rest/api/3/users/search?startAt=${startAt}`, {
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
+
+  return await results.json();
 })
 
 const getCurrentUser = async () => {
@@ -86,6 +110,7 @@ const getJQLTotal = async (jql) => {
   const results = await response.json()
   return results.total;
 }
+
 
 
 export const handler = resolver.getDefinitions();

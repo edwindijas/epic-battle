@@ -1,4 +1,6 @@
 import { Application } from 'game/main/application';
+import { getLeaderBoard } from 'models/LeaderBoard';
+import { User } from 'models/types';
 import { getUser } from 'models/Users';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -14,19 +16,24 @@ window.app = app;
 const waitTime = process.env.NODE_ENV === 'production' ? 6000 : 0;
 
 
+const run = (user: User) => {
+  getLeaderBoard().then((leaderBoard) => {
+    root.render(
+      <React.StrictMode>
+        <App userData={user} leaderBoardData={leaderBoard} />
+      </React.StrictMode>
+    );
+  })
+}
+
 getUser().then((user) => {
-  root.render(
-    <React.StrictMode>
-      <App userData={user} />
-    </React.StrictMode>
-  );
+  run(user);
 })
 
 
 window.addEventListener('blur', () => {
   app.pause();
 })
-
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

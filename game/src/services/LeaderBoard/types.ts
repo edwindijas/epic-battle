@@ -2,8 +2,8 @@ import { User } from "models/types"
 import { type } from "os"
 import { Dispatch } from "react"
 
-export interface WithuserProps {
-    
+export interface WithLeaderBoardProps {
+    userData: User[]
 }
 
 

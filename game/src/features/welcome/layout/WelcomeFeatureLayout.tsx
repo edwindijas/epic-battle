@@ -1,3 +1,4 @@
+import { useLeaderBoard } from "hooks/useLeaderBoard";
 import { useUser } from "hooks/useUser";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl"
@@ -17,6 +18,11 @@ export const WelcomeFeatureLayout = () => {
     }, [])
 
     const user = useUser();
+    const leaders = useLeaderBoard();
+
+    //find my number
+
+    const index = leaders.findIndex(lUser => lUser.accountId === user.accountId);
 
     if (user.mock) {
         return null;
@@ -42,7 +48,7 @@ export const WelcomeFeatureLayout = () => {
             </span>
         </StyEle.UserGreet>
         <StyEle.UserRating data-testid={WelcomeFeatureLayoutTestId + '-user-rating'} >
-            #59
+            #{ index === -1 ? 1 : index + 1 }
         </StyEle.UserRating>
     </StyEle.Wrapper>
 }

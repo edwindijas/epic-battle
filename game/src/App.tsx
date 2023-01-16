@@ -11,12 +11,12 @@ import { useSquare } from 'hooks/useSquare';
 import { WithLeaderBoard } from 'services/LeaderBoard/withLeaderBoard';
 import { AppProps } from 'types';
 
-function App({ userData }: AppProps) {
+function App({ userData, leaderBoardData }: AppProps) {
   const square = useSquare();
   const scale = square / 820;
   
   return (
-    <WithLeaderBoard >
+    <WithLeaderBoard userData={leaderBoardData} >
       <WithUser userData={userData} >
         <ThemeProvider theme={DefaultTheme} >
           <IntlProvider locale='en' messages={defaultMessages} >

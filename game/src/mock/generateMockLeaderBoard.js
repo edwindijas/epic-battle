@@ -18,7 +18,7 @@ const r = () => {
 const users = [];
 for (let x = 0; x < 1000; x++) {
     const id = uuid();
-    const highscore = Math.floor(Math.random() * 100000);
+    const highscore = Math.floor(Math.random() * 20000);
     const user = produce(baseUser, (draft) => {
         draft.accountId = id;
         draft.displayName = r();

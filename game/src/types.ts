@@ -1,5 +1,6 @@
 import { User } from "models/types";
 
 export interface AppProps {
-    userData: User
+    userData: User,
+    leaderBoardData: User[]
 }

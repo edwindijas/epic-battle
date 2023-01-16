@@ -49,11 +49,13 @@ export const UserProfile = styled.div`
     width: 4em;
     background-color: #fff;
     border-radius: 50%;
+    padding: 0.2em;
 `
 
 export const UserProfileImg = styled.img`
     width: 100%;
     height: 100%;
+    border-radius: 50%;
 `
 
 

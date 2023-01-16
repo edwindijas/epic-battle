@@ -4,15 +4,13 @@ modules:
       resource: main
       resolver:
         function: resolver
-      title: Epic Battle
+      title: Bug Blast
       viewportSize: xlarge
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
       layout: blank
   function:
     - key: resolver
       handler: index.handler
-      tunnel:
-        port: 3000
 resources:
   - key: main
     path: static/game
@@ -22,6 +20,10 @@ permissions:
       - 'unsafe-eval'
     styles:
       - 'unsafe-inline'
+  external:
+    images:
+      - '*.gravatar.com/avatar/'
+      - '*.wp.com/'
   scopes:
     - storage:app
     - read:jira-work

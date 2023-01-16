@@ -1,15 +1,15 @@
 import { User } from "models/types"
-import { createContext, PropsWithChildren, useEffect, useReducer } from "react"
+import { createContext, PropsWithChildren, useCallback, useEffect, useReducer } from "react"
 import { leaderboardReducer } from "./reducer"
-import { ILeaderBoardContext } from "./types"
+import { ILeaderBoardContext, WithLeaderBoardProps } from "./types"
 import { getLeaderBoard } from "models/LeaderBoard"
 
 export const LeaderBoardContext = createContext<ILeaderBoardContext>({} as ILeaderBoardContext)
 
-export const WithLeaderBoard = ({children}: PropsWithChildren) => {
-    const [users, dispatch] = useReducer(leaderboardReducer, [] as User[]);
+export const WithLeaderBoard = ({children, userData}: PropsWithChildren & WithLeaderBoardProps) => {
+    const [users, dispatch] = useReducer(leaderboardReducer, userData);
 
-    useEffect(() => {
+    const getUsers = useCallback(() => {
         getLeaderBoard().then((users) => {
             dispatch({
                 action: 'addData',
@@ -17,7 +17,14 @@ export const WithLeaderBoard = ({children}: PropsWithChildren) => {
                     data: users
                 }
             })
-        })
+        });
+    }, [])
+
+    useEffect(() => {
+        const interval = window.setTimeout(getUsers, 60000);
+        return  () => {
+            window.clearInterval(interval);
+        }
     }, [])
 
     return <LeaderBoardContext.Provider value={{users, dispatch}} >
