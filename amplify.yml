@@ -7,6 +7,7 @@ frontend:
         - npm ci
     build:
       commands:
+        - cd game
         - npm run build
   artifacts:
     baseDirectory: build
