@@ -11,6 +11,7 @@ frontend:
       commands:
         - cd game
         - npm run build
+        - ls
         - cd ../
         - ls
         - cp -r game/build ./build
