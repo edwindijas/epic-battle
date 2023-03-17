@@ -11,21 +11,13 @@ const JQL_UNRESOLVED_ISSUES_DUE_MONTH = 'assignee=currentUser() and resolution=U
 const STORAGE_HIGHSCORE = 'game-highscore'
 
 
-//const getAllUsersWithId = 
-
-
-resolver.define('status', (req) => {
-  return 'Hello, world!';
-});
-
-
 
 resolver.define('getUser', async (req) => {
   const user = await getCurrentUser();
   const resolvedCount = await getJQLTotal(JQL_RESOLVED_ISSUES);
   const unresolvedCount = await getJQLTotal(JQL_UNRESOLVED_ISSUES_DUE_MONTH);
   const total = resolvedCount + unresolvedCount;
-  const boost = total ? Math.floor((resolvedCount / total) * 30) : 1;
+  const boost = total ? Math.floor((resolvedCount / total) * 30) : 15;
   user.jiraBoost = boost;
   return user;
 })
@@ -42,16 +34,6 @@ resolver.define('getHighscores', async ({payload}) => {
   return {scores};
 })
 
-resolver.define('saveSampleData', async () => {
-  let count = 0;
-  const users = userData.slice(0, 50);
-  for (let x = 0; x < users.length; x++) {
-    const user = users[x];
-    const result = await saveHighscore({ payload: user });
-    count += 1;
-  }
-  return {ok: true, count, users}
-})
 
 resolver.define('saveHighscore', async({payload}) => {
   const { accountId } = await getCurrentUser();

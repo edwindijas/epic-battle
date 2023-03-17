@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "./static/js/main.9362aeb9.js",
+    "main.js": "./static/js/main.e913911e.js",
     "static/js/787.26bb69cf.chunk.js": "./static/js/787.26bb69cf.chunk.js",
     "static/media/Music_Loop.wav": "./static/media/Music_Loop.bc059ded20cb1d601183.wav",
     "static/media/Jingle_Game_Over_01.wav": "./static/media/Jingle_Game_Over_01.d3f672b80dd4cf6d7b14.wav",
@@ -14,10 +14,10 @@
     "static/media/Bomb.png": "./static/media/Bomb.468f64daa3c2e66abe5b.png",
     "static/media/cannon.png": "./static/media/cannon.2155c326eb825ccaf222.png",
     "index.html": "./index.html",
-    "main.9362aeb9.js.map": "./static/js/main.9362aeb9.js.map",
+    "main.e913911e.js.map": "./static/js/main.e913911e.js.map",
     "787.26bb69cf.chunk.js.map": "./static/js/787.26bb69cf.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.9362aeb9.js"
+    "static/js/main.e913911e.js"
   ]
 }

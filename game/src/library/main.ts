@@ -1,4 +1,4 @@
-import { PositionProperty } from "./main.types"
+import { PositionProperty, PromiseResolve } from "./main.types"
 
 /**
  * Creates a style for the absolute or relative position.
@@ -21,4 +21,16 @@ export const uniPos = (offset: number, omit: PositionProperty[] = [], units: str
     })
 
     return str
+}
+
+
+export const getPromiseFunc = <A, B = A> ()  => {
+    let resolve: PromiseResolve<A> = (() => {}) as PromiseResolve<A>
+        , reject: PromiseResolve<B> = (() => {}) as PromiseResolve<B>;
+    const promise = new Promise<A>((res, rej) => {
+        resolve = res;
+        reject = rej;
+    });
+
+    return {resolve, reject, promise}
 }

@@ -13,22 +13,19 @@ const root = ReactDOM.createRoot(
 
 const app = new Application()
 window.app = app;
-const waitTime = process.env.NODE_ENV === 'production' ? 6000 : 0;
+
+const user = getUser();
+const leaderboard = getLeaderBoard();
 
 
-const run = (user: User) => {
-  getLeaderBoard().then((leaderBoard) => {
-    root.render(
-      <React.StrictMode>
-        <App userData={user} leaderBoardData={leaderBoard} />
-      </React.StrictMode>
-    );
-  })
-}
-
-getUser().then((user) => {
-  run(user);
+Promise.all([user, leaderboard]).then(([user, leaderboard]) => {
+  root.render(
+    <React.StrictMode>
+      <App userData={user} leaderBoardData={leaderboard} />
+    </React.StrictMode>
+  );
 })
+
 
 
 window.addEventListener('blur', () => {

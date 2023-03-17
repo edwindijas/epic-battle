@@ -1,7 +1,9 @@
-import { invoke } from '@forge/bridge';
-//import { invoke } from './bridge';
+//import { invoke } from '@forge/bridge';
+import { invoke } from './bridge';
 import { User } from './types';
 import GuestUser from "mock/User.json";
+import mockUsers from "mock/user.data.json"
+import { getPromiseFunc } from 'library/main';
 
 const BASE_URL = '/rest/api/3/'
 
@@ -15,21 +17,27 @@ export const getUser = async () => {
     ).then((response) => {
        return response as User;
     }).catch((e) => {
-        console.log(e);
-       return GuestUser;
+       return GuestUser as User;
     })
 }
 
 
 export const getAllUsersRecursive = async (startAt = 0): Promise<User[]>  => {
-    const results = await getUserBatch(startAt);
+    const {promise, resolve} = getPromiseFunc<User[]>();
+    const users = getUserBatch(startAt);
+    users.then(async (results) => {
+        if (results.length === 0) {
+            return resolve([]);
+        }
+        const nextResults = await getAllUsersRecursive(startAt + results.length);
+        resolve([...results, ...nextResults]);
 
-    if (results.length === 0) {
-        return results;
-    }
+    }).catch(e => {
+        resolve(mockUsers)
+    })
 
-    const combi =  [...results, ...await getAllUsersRecursive(startAt + results.length)];
-    return combi;
+    return promise;
+
 }
 
 const getUserBatch = async (startAt: number) => {

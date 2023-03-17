@@ -1,5 +1,5 @@
-import { invoke } from '@forge/bridge';
-//import { invoke } from './bridge';
+//import { invoke } from '@forge/bridge';
+import { invoke } from './bridge';
 import { User } from './types';
 import MockUsers from "mock/user.data.json";
 import { getAllUsersRecursive } from './Users';
@@ -20,8 +20,6 @@ export const getLeaderBoard = async (): Promise<User[]> => {
    })
 
    const data = combineData(highScores, allUsers);
-
-   console.log(allUsers);
 
    return data;
 }
