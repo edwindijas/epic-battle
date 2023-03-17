@@ -11,7 +11,7 @@ frontend:
         - cd game
         - npm run build
   artifacts:
-    baseDirectory: build
+    baseDirectory: game/build
     files:
       - '**/*'
   cache:
