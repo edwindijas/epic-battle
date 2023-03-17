@@ -1,0 +1,23 @@
+{
+  "name": "epic-battle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd game && npm run build:serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwindijas/epic-battle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edwindijas/epic-battle/issues"
+  },
+  "homepage": "https://github.com/edwindijas/epic-battle#readme",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
