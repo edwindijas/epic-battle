@@ -6,12 +6,16 @@ frontend:
         - cd game
         - npm ci
         - cd ..
+        - ls
     build:
       commands:
         - cd game
         - npm run build
+        - ls
+        - cd ..
+        - cp -r game/build ./build
   artifacts:
-    baseDirectory: game/build
+    baseDirectory: build
     files:
       - '**/*'
   cache:
