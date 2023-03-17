@@ -5,6 +5,7 @@ frontend:
       commands:
         - cd game
         - npm ci
+        - cd ..
     build:
       commands:
         - cd game
