@@ -5,15 +5,16 @@ frontend:
       commands:
         - cd game
         - npm ci
-        - cd ..
+        - cd ../
         - ls
     build:
       commands:
         - cd game
         - npm run build
         - ls
-        - cd ..
+        - cd ../
         - cp -r game/build ./build
+        - ls
   artifacts:
     baseDirectory: build
     files:
