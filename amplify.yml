@@ -5,11 +5,13 @@ frontend:
       commands:
         - cd game
         - npm ci
+        - ls
         - cd ..
     build:
       commands:
         - cd game
         - npm run build:serve
+        - ls
         - cd ..
 
   artifacts:
