@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build && rm -rf ../forge/static/game && mv build ../forge/static/game",
-    "build:serve": "react-app-rewired build && rm -rf ../build && mv build ../",
+    "build:serve": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
